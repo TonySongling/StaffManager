@@ -1,5 +1,6 @@
 #pragma once
-
+#include "mysql.h"
+#include "SQLUtils.h"
 // CAddDlg ¶Ô»°¿ò
 
 class CAddDlg : public CDialogEx
@@ -21,4 +22,6 @@ public:
 	afx_msg void OnBnClickedAdd();
 	afx_msg void OnBnClickedResetButton();
 	virtual BOOL OnInitDialog();
+	BOOL checkNo(MYSQL mysql,SQLUtils* sqlutils,CString staff_no);
+	BOOL checkTel(MYSQL mysql,SQLUtils* sqlutils,CString staff_tel);
 };

@@ -51,6 +51,9 @@
     <ClInclude Include="SQLUtils.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RegisterFaceDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StaffManager.cpp">
@@ -72,6 +75,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SQLUtils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterFaceDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

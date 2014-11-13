@@ -72,8 +72,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>D:\opencv\build\x86\vc10\lib;C:\Program Files\MySQL\MySQL Server 5.6\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Program Files\MySQL\MySQL Server 5.6\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\opencv\build\x86\vc10\lib;C:\Program Files\MySQL\MySQL Server 5.5\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\MySQL\MySQL Server 5.5\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="AddDlg.h" />
     <ClInclude Include="LoginDlg.h" />
+    <ClInclude Include="RegisterFaceDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SQLUtils.h" />
     <ClInclude Include="Staff.h" />
@@ -196,6 +197,7 @@
   <ItemGroup>
     <ClCompile Include="AddDlg.cpp" />
     <ClCompile Include="LoginDlg.cpp" />
+    <ClCompile Include="RegisterFaceDlg.cpp" />
     <ClCompile Include="SQLUtils.cpp" />
     <ClCompile Include="Staff.cpp" />
     <ClCompile Include="StaffManager.cpp" />

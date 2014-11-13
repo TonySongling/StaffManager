@@ -23,10 +23,15 @@ int Staff::getStaffId(void)
 	return this->staff_id;
 }
 
+CString Staff::getName(void)
+{
+	return this->name;
+}
+
 
 CString Staff::getNo(void)
 {
-	return this->name;
+	return this->no;
 }
 
 

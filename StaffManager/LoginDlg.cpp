@@ -83,6 +83,7 @@ BOOL CLoginDlg::CheckUser(void)
 		
 		if (mysql_num_rows(result)>0)
 		{
+			mysql_close(&mysql);
 			return TRUE;
 		}else{
 			MessageBox("用户名或密码有误，请重新输入");
