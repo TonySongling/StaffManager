@@ -50,6 +50,7 @@ void CAddDlg::OnBnClickedAdd()
 	if (name.IsEmpty() || no.IsEmpty())
 	{
 		MessageBox("姓名和编号不能为空");
+		//ASDD
 		return;
 	}
 
