@@ -54,6 +54,24 @@
     <ClInclude Include="RegisterFaceDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="detectObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="preprocessFace.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="recognition.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="InitUtils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CvvImage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StaffManager.cpp">
@@ -78,6 +96,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RegisterFaceDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="detectObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="preprocessFace.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="recognition.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InitUtils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CvvImage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
