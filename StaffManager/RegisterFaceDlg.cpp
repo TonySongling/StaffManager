@@ -40,9 +40,6 @@ const int faceHeight = faceWidth;
 const int DESIRED_CAMERA_WIDTH = 640;
 const int DESIRED_CAMERA_HEIGHT = 480;
 
-// Parameters controlling how often to keep new faces when collecting them. Otherwise, the training set could look to similar to each other!
-const double CHANGE_IN_IMAGE_FOR_COLLECTION = 0.3;      // How much the facial image should change before collecting a new face photo for training.
-const double CHANGE_IN_SECONDS_FOR_COLLECTION = 1.0;       // How much time must pass before collecting a new face photo for training.
 
 const char *windowName = "人脸特征提取";   // Name shown in the GUI window.
 const int BORDER = 8;  // Border between GUI elements to the edge of the image.
@@ -107,19 +104,38 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 	videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, DESIRED_CAMERA_WIDTH);
 	videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, DESIRED_CAMERA_HEIGHT);
 
-	//CDC *pDc = GetDlgItem(IDC_IMAGE)->GetDC();
-	//HDC hDc = pDc->GetSafeHdc();
-	//CRect rect;
-	//GetDlgItem(IDC_IMAGE)->GetClientRect(&rect);
-	//CvvImage cimg;
-	//IplImage *img;
+	
+	vector<Mat> preprocessedFaces;
+	Mat old_prepreprocessedFace;
 	Mat cameraFrame;
+	Mat displayedFrame;
+	// Find a face and preprocess it to have a standard size and contrast & brightness.
+	Rect faceRect;  // Position of detected face.
+	Rect searchedLeftEye, searchedRightEye; // top-left and top-right regions of the face, where eyes were searched.
+	Point leftEye, rightEye;    // Position of the detected eyes.
+
+	double old_time = 0;
 	while (isFinished == false)
 	{
 		videoCapture >> cameraFrame;
-		img = &IplImage(cameraFrame);
+		if( cameraFrame.empty() ) {
+			AfxMessageBox("获取图像失败");
+			return;
+		}
+		cameraFrame.copyTo(displayedFrame);
+
+		Utils utils;
+		utils.GetPreprocessFaces(preprocessedFaces, displayedFrame, faceWidth, faceCascade, eyeCascade1, eyeCascade2, faceRect, leftEye,  rightEye,  searchedLeftEye, searchedRightEye, old_prepreprocessedFace, old_time);
+		if ((preprocessedFaces.size()/2) == 5)
+		{
+			AfxMessageBox("提取特征完成");
+			isFinished = true;
+			return;
+		}
+		img = &IplImage(displayedFrame);
 		cimg.CopyOf(img,3);
 		cimg.DrawToHDC(hDc,&rect);
+		
 		if( waitKey(30)>=0 ) 
 			break;
 	}

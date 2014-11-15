@@ -11,7 +11,7 @@ detectObject::~detectObject(void)
 }
 
 
-void detectObject::detectLargestObject(const Mat &img, CascadeClassifier &cascade, Rect &largestObject, int scaledWidth)
+void detectObject::detectLargestObject(Mat &img, CascadeClassifier &cascade, Rect &largestObject, int scaledWidth)
 {
 	// Only search for just 1 object (the biggest in the image).
 	int flags = CASCADE_FIND_BIGGEST_OBJECT;// | CASCADE_DO_ROUGH_SEARCH;
@@ -37,7 +37,7 @@ void detectObject::detectLargestObject(const Mat &img, CascadeClassifier &cascad
 }
 
 
-void detectObject::detectObjectsCustom(const Mat &img, CascadeClassifier &cascade, vector<Rect> &objects, int scaledWidth, int flags, Size minFeatureSize, float searchScaleFactor, int minNeighbors)
+void detectObject::detectObjectsCustom(Mat &img, CascadeClassifier &cascade, vector<Rect> &objects, int scaledWidth, int flags, Size minFeatureSize, float searchScaleFactor, int minNeighbors)
 {
 	// If the input image is not grayscale, then convert the BGR or BGRA color image to grayscale.
 	Mat gray;

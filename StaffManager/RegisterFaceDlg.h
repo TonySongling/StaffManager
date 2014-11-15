@@ -13,6 +13,7 @@
 #include "preprocessFace.h"     // Easily preprocess face images, for face recognition.
 #include "recognition.h"     // Train the face recognition system and recognize a person from an image.
 #include "InitUtils.h"
+#include "Utils.h"
 using namespace cv;
 using namespace std;
 // CRegisterFaceDlg ¶Ô»°¿ò
