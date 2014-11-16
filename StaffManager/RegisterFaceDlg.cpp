@@ -31,7 +31,7 @@ char *faceCascadeFilename = "lbpcascade_frontalface.xml";     // LBP face detect
 //char *eyeCascadeFilename2 = "haarcascade_mcs_righteye.xml";       // Good eye detector for open-or-closed eyes.
 char *eyeCascadeFilename1 = "haarcascade_eye.xml";               // Basic eye detector for open eyes only.
 char *eyeCascadeFilename2 = "haarcascade_eye_tree_eyeglasses.xml"; // Basic eye detector for open eyes if they might wear glasses.
-
+VideoCapture videoCapture;
 
 // Set the desired face dimensions. Note that "getPreprocessedFace()" will return a square face.
 const int faceWidth = 70;
@@ -75,6 +75,7 @@ void CRegisterFaceDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRegisterFaceDlg, CDialogEx)
 	ON_BN_CLICKED(ID_ADD_BUTTON, &CRegisterFaceDlg::OnBnClickedAddButton)
 	ON_BN_CLICKED(IDC_FINISH_BUTTON, &CRegisterFaceDlg::OnBnClickedFinishButton)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -95,7 +96,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 	CascadeClassifier faceCascade;
 	CascadeClassifier eyeCascade1;
 	CascadeClassifier eyeCascade2;
-	VideoCapture videoCapture;
+	
 
 	InitUtils initUtils;
 	initUtils.initDetectors(faceCascade,eyeCascade1,eyeCascade2,faceCascadeFilename,eyeCascadeFilename1,eyeCascadeFilename2);
@@ -113,16 +114,8 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 	//GetDlgItem(IDC_IMAGE)->GetClientRect(&rect);
 	//CvvImage cimg;
 	//IplImage *img;
-	Mat cameraFrame;
-	while (isFinished == false)
-	{
-		videoCapture >> cameraFrame;
-		img = &IplImage(cameraFrame);
-		cimg.CopyOf(img,3);
-		cimg.DrawToHDC(hDc,&rect);
-		if( waitKey(30)>=0 ) 
-			break;
-	}
+	
+
 }
 
 
@@ -141,7 +134,16 @@ BOOL CRegisterFaceDlg::OnInitDialog()
 	pDc = GetDlgItem(IDC_IMAGE)->GetDC();
 	hDc = pDc->GetSafeHdc();
 	GetDlgItem(IDC_IMAGE)->GetClientRect(&rect);
-	isFinished = false;
+
+	Mat cameraFrame;
+		videoCapture >> cameraFrame;
+		img = &IplImage(cameraFrame);
+		cimg.CopyOf(img,3);
+		if(true){
+		cimg.DrawToHDC(hDc,&rect);
+		}
+	SetTimer(1,10,NULL);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -212,4 +214,17 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 void CRegisterFaceDlg::OnBnClickedFinishButton()
 {
 	
+}
+
+
+void CRegisterFaceDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+		Mat cameraFrame;
+		videoCapture >> cameraFrame;
+		img = &IplImage(cameraFrame);
+		cimg.CopyOf(img,3);
+		cimg.DrawToHDC(hDc,&rect);
+	
+	CDialogEx::OnTimer(nIDEvent);
 }

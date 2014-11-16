@@ -44,4 +44,5 @@ public:
 	virtual BOOL OnInitDialog();
 	void readStaff(CListCtrl* pList);
 	afx_msg void OnBnClickedFinishButton();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
