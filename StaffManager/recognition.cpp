@@ -72,7 +72,6 @@ Ptr<FaceRecognizer> recognition::learnCollectedFaces(const vector<Mat> preproces
 {
 	Ptr<FaceRecognizer> model;
 
-	cout << "Learning the collected faces using the [" << facerecAlgorithm << "] algorithm ..." << endl;
 
 	// Make sure the "contrib" module is dynamically loaded at runtime.
 	bool haveContribModule = initModule_contrib();

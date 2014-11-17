@@ -1,16 +1,20 @@
-﻿生成启动时间为 2014/11/17 16:50:00。
+﻿生成启动时间为 2014/11/17 22:39:50。
      1>项目“D:\项目\StaffManager\StaffManager\StaffManager.vcxproj”在节点 2 上(build 个目标)。
      1>InitializeBuildStatus:
          正在创建“x64\Debug\StaffManager.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
        ClCompile:
          所有输出均为最新。
-         D:\Program Files\VS2010\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"x64\Debug\StaffManager.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /errorReport:prompt RegisterFaceDlg.cpp
-         RegisterFaceDlg.cpp
-     1>RegisterFaceDlg.cpp(181): warning C4129: “.”: 不可识别的字符转义序列
-     1>RegisterFaceDlg.cpp(181): warning C4129: “.”: 不可识别的字符转义序列
-     1>RegisterFaceDlg.cpp(181): warning C4129: “.”: 不可识别的字符转义序列
-     1>RegisterFaceDlg.cpp(181): warning C4129: “.”: 不可识别的字符转义序列
-     1>RegisterFaceDlg.cpp(175): warning C4101: “ex”: 未引用的局部变量
+         D:\Program Files\VS2010\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"x64\Debug\StaffManager.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /errorReport:prompt Utils.cpp
+         Utils.cpp
+     1>Utils.cpp(91): warning C4551: 缺少参数列表的函数调用
+     1>Utils.cpp(105): warning C4800: “BOOL”: 将值强制为布尔值“true”或“false”(性能警告)
+     1>Utils.cpp(108): warning C4800: “BOOL”: 将值强制为布尔值“true”或“false”(性能警告)
+     1>Utils.cpp(113): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 D:\Program Files\VS2010\VC\include\string.h(105) : 参见“strcpy”的声明
+     1>Utils.cpp(118): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 D:\Program Files\VS2010\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>Utils.cpp(125): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 D:\Program Files\VS2010\VC\include\stdio.h(371) : 参见“sprintf”的声明
        ResourceCompile:
          所有输出均为最新。
        ManifestResourceCompile:
@@ -21,10 +25,12 @@
          x64\Debug\AddDlg.obj
          x64\Debug\CvvImage.obj
          x64\Debug\detectObject.obj
+         x64\Debug\Face.obj
          x64\Debug\InitUtils.obj
          x64\Debug\LoginDlg.obj
          x64\Debug\preprocessFace.obj
          x64\Debug\recognition.obj
+         x64\Debug\RecognitionDlg.obj
          x64\Debug\RegisterFaceDlg.obj
          x64\Debug\SQLUtils.obj
          x64\Debug\Staff.obj
@@ -46,4 +52,4 @@
 
 生成成功。
 
-已用时间 00:00:03.63
+已用时间 00:00:03.42

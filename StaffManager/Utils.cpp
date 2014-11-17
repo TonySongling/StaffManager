@@ -6,6 +6,7 @@ Utils::Utils(void)
 {
 	CHANGE_IN_IMAGE_FOR_COLLECTION = 0.3;
 	CHANGE_IN_SECONDS_FOR_COLLECTION = 1.0;
+	facerecAlgorithm = "FaceRecognizer.LBPH";
 }
 
 
@@ -154,4 +155,74 @@ void Utils::SaveFacePath(CString staff_no, CString face_path)
 		AfxMessageBox("系统出错");
 		return;
 	}
+}
+
+
+vector<Face> Utils::GetAllFaces()
+{
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+	Face face;
+	vector<Face> faces;
+	mysql_init(&mysql);
+
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		string sql = "select face_id, staff_no, face_path from t_face";
+		mysql_query(&mysql,sql.c_str());
+
+		result = mysql_store_result(&mysql);
+		int fieldcount = mysql_num_fields(result);
+		MYSQL_ROW row = NULL;
+		row = mysql_fetch_row(result);
+		while(NULL != row)
+		{
+			for(int i=0; i<fieldcount; i++)
+			{
+				switch(i){
+				case 0:
+					face.SetFaceId(atoi(row[i]));
+					break;
+				case 1:
+					face.SetStaffNo(row[i]);
+					break;
+				case 2:
+					face.SetFacePath(row[i]);
+					break;
+				}
+			}
+			faces.push_back(face);
+			row = mysql_fetch_row(result);
+		}
+		mysql_close(&mysql);
+		return faces;
+	}
+	else{
+		AfxMessageBox("系统出错");
+		return vector<Face>();
+	}
+
+}
+
+
+Ptr<FaceRecognizer> Utils::GetTrainModel(vector<Mat> &preprocessedFaces, vector<int> &facelabels)
+{
+	bool haveEnoughData = true;
+	Ptr<FaceRecognizer> model;
+	recognition recog;
+	if (preprocessedFaces.size() <= 0 || preprocessedFaces.size() != facelabels.size())
+	{
+		haveEnoughData = false;
+	}
+	if (haveEnoughData)
+	{
+		model = recog.learnCollectedFaces(preprocessedFaces, facelabels, facerecAlgorithm);
+	}
+	return model;
 }

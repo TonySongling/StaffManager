@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CStaffManagerDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(ID_ADD, &CStaffManagerDlg::OnBnClickedAdd)
 	ON_BN_CLICKED(IDC_INPUT_FACE_BUTTON, &CStaffManagerDlg::OnBnClickedInputFaceButton)
+	ON_BN_CLICKED(IDC_BUTTON1, &CStaffManagerDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -165,5 +166,12 @@ void CStaffManagerDlg::OnBnClickedAdd()
 void CStaffManagerDlg::OnBnClickedInputFaceButton()
 {
 	CRegisterFaceDlg dlg;
+	dlg.DoModal();
+}
+
+
+void CStaffManagerDlg::OnBnClickedButton1()
+{
+	CRecognitionDlg dlg;
 	dlg.DoModal();
 }

@@ -6,49 +6,6 @@
 #include "RegisterFaceDlg.h"
 #include "afxdialogex.h"
 
-// The Face Recognition algorithm can be one of these and perhaps more, depending on your version of OpenCV, which must be atleast v2.4.1:
-//    "FaceRecognizer.Eigenfaces":  Eigenfaces, also referred to as PCA (Turk and Pentland, 1991).
-//    "FaceRecognizer.Fisherfaces": Fisherfaces, also referred to as LDA (Belhumeur et al, 1997).
-//    "FaceRecognizer.LBPH":        Local Binary Pattern Histograms (Ahonen et al, 2006).
-const char *facerecAlgorithm = "FaceRecognizer.Fisherfaces";
-//const char *facerecAlgorithm = "FaceRecognizer.Eigenfaces";
-
-
-// Sets how confident the Face Verification algorithm should be to decide if it is an unknown person or a known person.
-// A value roughly around 0.5 seems OK for Eigenfaces or 0.7 for Fisherfaces, but you may want to adjust it for your
-// conditions, and if you use a different Face Recognition algorithm.
-// Note that a higher threshold value means accepting more faces as known people,
-// whereas lower values mean more faces will be classified as "unknown".
-const float UNKNOWN_PERSON_THRESHOLD = 0.7f;
-
-
-// Cascade Classifier file, used for Face Detection.
-char *faceCascadeFilename = "lbpcascade_frontalface.xml";     // LBP face detector.
-//char *faceCascadeFilename = "haarcascade_frontalface_alt_tree.xml";  // Haar face detector.
-//char *eyeCascadeFilename1 = "haarcascade_lefteye_2splits.xml";   // Best eye detector for open-or-closed eyes.
-//char *eyeCascadeFilename2 = "haarcascade_righteye_2splits.xml";   // Best eye detector for open-or-closed eyes.
-//char *eyeCascadeFilename1 = "haarcascade_mcs_lefteye.xml";       // Good eye detector for open-or-closed eyes.
-//char *eyeCascadeFilename2 = "haarcascade_mcs_righteye.xml";       // Good eye detector for open-or-closed eyes.
-char *eyeCascadeFilename1 = "haarcascade_eye.xml";               // Basic eye detector for open eyes only.
-char *eyeCascadeFilename2 = "haarcascade_eye_tree_eyeglasses.xml"; // Basic eye detector for open eyes if they might wear glasses.
-
-
-// Set the desired face dimensions. Note that "getPreprocessedFace()" will return a square face.
-const int faceWidth = 70;
-const int faceHeight = faceWidth;
-
-const int DESIRED_CAMERA_WIDTH = 640;
-const int DESIRED_CAMERA_HEIGHT = 480;
-
-
-const char *windowName = "人脸特征提取";   // Name shown in the GUI window.
-const int BORDER = 8;  // Border between GUI elements to the edge of the image.
-
-const bool preprocessLeftAndRightSeparately = true;   // Preprocess left & right sides of the face separately, in case there is stronger light on one side.
-
-// Set to true if you want to see many windows created, showing various debug info. Set to 0 otherwise.
-bool m_debug = false;
-
 // CRegisterFaceDlg 对话框
 
 IMPLEMENT_DYNAMIC(CRegisterFaceDlg, CDialogEx)
@@ -56,7 +13,18 @@ IMPLEMENT_DYNAMIC(CRegisterFaceDlg, CDialogEx)
 CRegisterFaceDlg::CRegisterFaceDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CRegisterFaceDlg::IDD, pParent)
 {
+	// Cascade Classifier file, used for Face Detection.
+	faceCascadeFilename = "lbpcascade_frontalface.xml";     // LBP face detector.
+	eyeCascadeFilename1 = "haarcascade_eye.xml";               // Basic eye detector for open eyes only.
+	eyeCascadeFilename2 = "haarcascade_eye_tree_eyeglasses.xml"; // Basic eye detector for open eyes if they might wear glasses.
 
+
+	// Set the desired face dimensions. Note that "getPreprocessedFace()" will return a square face.
+	faceWidth = 70;
+	faceHeight = faceWidth;
+
+	DESIRED_CAMERA_WIDTH = 640;
+	DESIRED_CAMERA_HEIGHT = 480;
 }
 
 CRegisterFaceDlg::~CRegisterFaceDlg()

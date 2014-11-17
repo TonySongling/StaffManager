@@ -1,5 +1,9 @@
 #pragma once
+#include "afxdialogex.h"
+#include "stdio.h"
+#include "stdlib.h"
 #include "Staff.h"
+#include "Face.h"
 #include "opencv2/opencv.hpp"
 #include "preprocessFace.h"
 #include "recognition.h"
@@ -13,6 +17,7 @@ class Utils
 public:
 	Utils(void);
 	~Utils(void);
+	char *facerecAlgorithm;
 	// Parameters controlling how often to keep new faces when collecting them. Otherwise, the training set could look to similar to each other!
 	double CHANGE_IN_IMAGE_FOR_COLLECTION;      // How much the facial image should change before collecting a new face photo for training.
 	double CHANGE_IN_SECONDS_FOR_COLLECTION ;       // How much time must pass before collecting a new face photo for training.
@@ -23,5 +28,6 @@ public:
 	bool CreatePath(CString m_strFolderPath);
 	void DeletePath(CString sPath);
 	void SaveFacePath(CString staff_no, CString face_path);
+	vector<Face> GetAllFaces();
+	Ptr<FaceRecognizer> GetTrainModel(vector<Mat> &preprocessedFaces, vector<int> &facelabels);
 };
-

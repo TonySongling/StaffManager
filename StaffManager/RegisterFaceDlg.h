@@ -32,6 +32,19 @@ public:
 	CascadeClassifier faceCascade;
 	CascadeClassifier eyeCascade1;
 	CascadeClassifier eyeCascade2;
+
+	// Cascade Classifier file, used for Face Detection.
+	char *faceCascadeFilename ;     // LBP face detector.
+	char *eyeCascadeFilename1 ;               // Basic eye detector for open eyes only.
+	char *eyeCascadeFilename2 ; // Basic eye detector for open eyes if they might wear glasses.
+
+
+	// Set the desired face dimensions. Note that "getPreprocessedFace()" will return a square face.
+	int faceWidth ;
+	int faceHeight ;
+
+	int DESIRED_CAMERA_WIDTH ;
+	int DESIRED_CAMERA_HEIGHT ;
 	CRegisterFaceDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CRegisterFaceDlg();
 

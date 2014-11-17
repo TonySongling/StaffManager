@@ -186,10 +186,12 @@
     <ClInclude Include="AddDlg.h" />
     <ClInclude Include="CvvImage.h" />
     <ClInclude Include="detectObject.h" />
+    <ClInclude Include="Face.h" />
     <ClInclude Include="InitUtils.h" />
     <ClInclude Include="LoginDlg.h" />
     <ClInclude Include="preprocessFace.h" />
     <ClInclude Include="recognition.h" />
+    <ClInclude Include="RecognitionDlg.h" />
     <ClInclude Include="RegisterFaceDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SQLUtils.h" />
@@ -204,10 +206,12 @@
     <ClCompile Include="AddDlg.cpp" />
     <ClCompile Include="CvvImage.cpp" />
     <ClCompile Include="detectObject.cpp" />
+    <ClCompile Include="Face.cpp" />
     <ClCompile Include="InitUtils.cpp" />
     <ClCompile Include="LoginDlg.cpp" />
     <ClCompile Include="preprocessFace.cpp" />
     <ClCompile Include="recognition.cpp" />
+    <ClCompile Include="RecognitionDlg.cpp" />
     <ClCompile Include="RegisterFaceDlg.cpp" />
     <ClCompile Include="SQLUtils.cpp" />
     <ClCompile Include="Staff.cpp" />
