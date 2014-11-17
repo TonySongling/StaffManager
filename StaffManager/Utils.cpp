@@ -21,7 +21,7 @@ void Utils::DrawPicToHDC(CDC *pDc, Mat &cameraFrame, UINT ID)
 }
 
 
-void Utils::GetPreprocessFaces(vector<Mat> preprocessedFaces, Mat displayedFrame, int faceWidth, CascadeClassifier faceCascade, CascadeClassifier eyeCascade1, CascadeClassifier eyeCascade2, Rect faceRect, Point leftEye, Point rightEye, Rect searchedLeftEye, Rect searchedRightEye,Mat old_prepreprocessedFace, double old_time)
+void Utils::GetPreprocessFaces(vector<Mat> &preprocessedFaces, Mat &displayedFrame, int faceWidth, CascadeClassifier &faceCascade, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, Rect &faceRect, Point &leftEye, Point &rightEye, Rect &searchedLeftEye, Rect &searchedRightEye,Mat &old_prepreprocessedFace, double &old_time)
 {
 	preprocessFace p_preocess;
 
@@ -77,4 +77,81 @@ void Utils::GetPreprocessFaces(vector<Mat> preprocessedFaces, Mat displayedFrame
 		}
 	}
 
+}
+
+
+void Utils::SaveFaceFeatures(vector<Mat> &preprocessedFaces)
+{
+}
+
+
+bool Utils::CreatePath(CString m_strFolderPath)
+{
+	if (PathIsDirectory)
+	{
+		if (CreateDirectory(m_strFolderPath, NULL)) 
+		{ 
+			return true;
+		}
+	}
+	return false;
+}
+
+
+void Utils::DeletePath(CString sPath)
+{
+	CFileFind tempFind;    
+	bool IsFinded = tempFind.FindFile(sPath + "\\*.*");    
+	while (IsFinded)    
+	{    
+		IsFinded = tempFind.FindNextFile();    
+		//当这个目录中不含有.的时候，就是说这不是一个文件。  
+		if (!tempFind.IsDots())    
+		{    
+			char sFoundFileName[200];     
+			strcpy(sFoundFileName,tempFind.GetFileName().GetBuffer(200));  
+			//如果是目录那么删除目录  
+			if (tempFind.IsDirectory())    
+			{     
+				char sTempDir[200];       
+				sprintf(sTempDir,"%s\\%s",sPath,sFoundFileName);    
+				DeletePath(sTempDir); //其实真正删除文件的也就这两句，别的都是陪衬  
+			}    
+			//如果是文件那么删除文件  
+			else      
+			{     
+				char sTempFileName[200];      
+				sprintf(sTempFileName,"%s\\%s",sPath,sFoundFileName);    
+				DeleteFile(sTempFileName);    
+			}    
+		}    
+	}    
+	tempFind.Close();    
+}
+
+
+void Utils::SaveFacePath(CString staff_no, CString face_path)
+{
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+
+	mysql_init(&mysql);
+
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		string sql = "insert into t_face (staff_no, face_path) values(";
+		sql.append(1,'\'').append(staff_no).append(1,'\'').append(",").append(1,'\'').append(face_path).append(1,'\'').append(")");
+		mysql_query(&mysql,sql.c_str());
+		mysql_close(&mysql);
+	}
+	else{
+		AfxMessageBox("系统出错");
+		return;
+	}
 }

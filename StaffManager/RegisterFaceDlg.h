@@ -29,7 +29,9 @@ public:
 	CRect rect;
 	CvvImage cimg;
 	IplImage *img;
-	bool isFinished;
+	CascadeClassifier faceCascade;
+	CascadeClassifier eyeCascade1;
+	CascadeClassifier eyeCascade2;
 	CRegisterFaceDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CRegisterFaceDlg();
 

@@ -3,6 +3,9 @@
 #include "opencv2/opencv.hpp"
 #include "preprocessFace.h"
 #include "recognition.h"
+#include <shlwapi.h>
+#include "mysql.h"
+#include "SQLUtils.h"
 using namespace cv;
 using namespace std;
 class Utils
@@ -15,6 +18,10 @@ public:
 	double CHANGE_IN_SECONDS_FOR_COLLECTION ;       // How much time must pass before collecting a new face photo for training.
 
 	void DrawPicToHDC(CDC *pDc, Mat &cameraFrame, UINT ID);
-	void GetPreprocessFaces(vector<Mat> preprocessedFaces, Mat displayedFrame, int faceWidth, CascadeClassifier faceCascade, CascadeClassifier eyeCascade1, CascadeClassifier eyeCascade2, Rect faceRect, Point leftEye, Point rightEye, Rect searchedLeftEye, Rect searchedRightEye,Mat old_prepreprocessedFace, double old_time);
+	void GetPreprocessFaces(vector<Mat> &preprocessedFaces, Mat &displayedFrame, int faceWidth, CascadeClassifier &faceCascade, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, Rect &faceRect, Point &leftEye, Point &rightEye, Rect &searchedLeftEye, Rect &searchedRightEye,Mat &old_prepreprocessedFace, double &old_time);
+	void SaveFaceFeatures(vector<Mat> &preprocessedFaces);
+	bool CreatePath(CString m_strFolderPath);
+	void DeletePath(CString sPath);
+	void SaveFacePath(CString staff_no, CString face_path);
 };
 

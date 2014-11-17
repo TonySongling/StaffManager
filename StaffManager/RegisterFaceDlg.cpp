@@ -88,16 +88,29 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 		MessageBox("请选中一项再进行操作");
 		return;
 	}
+	CString staff_no = m_list->GetItemText(nSel,0);
 
-	CascadeClassifier faceCascade;
-	CascadeClassifier eyeCascade1;
-	CascadeClassifier eyeCascade2;
+	//创建Face资源文件夹
+	Utils utils;
+	CString path = "Face";
+	if (!PathFileExists(path))
+	{
+		if (utils.CreatePath(path))
+		{
+			SetCurrentDirectory(path);
+		}else{
+			AfxMessageBox("创建资源文件夹失败");
+			return;
+		}
+	}else{
+		SetCurrentDirectory(path);
+	}
+
 	VideoCapture videoCapture;
 
 	InitUtils initUtils;
-	initUtils.initDetectors(faceCascade,eyeCascade1,eyeCascade2,faceCascadeFilename,eyeCascadeFilename1,eyeCascadeFilename2);
-
 	int cameraNumber = 0;
+	//初始化摄像头
 	if(!initUtils.initWebcam(videoCapture,cameraNumber))
 		return;
 
@@ -115,7 +128,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 	Point leftEye, rightEye;    // Position of the detected eyes.
 
 	double old_time = 0;
-	while (isFinished == false)
+	while (true)
 	{
 		videoCapture >> cameraFrame;
 		if( cameraFrame.empty() ) {
@@ -124,12 +137,49 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 		}
 		cameraFrame.copyTo(displayedFrame);
 
-		Utils utils;
 		utils.GetPreprocessFaces(preprocessedFaces, displayedFrame, faceWidth, faceCascade, eyeCascade1, eyeCascade2, faceRect, leftEye,  rightEye,  searchedLeftEye, searchedRightEye, old_prepreprocessedFace, old_time);
 		if ((preprocessedFaces.size()/2) == 5)
 		{
+			//创建员工脸部特征资源文件夹
+			if (!PathFileExists(staff_no))
+			{
+				if (utils.CreatePath(staff_no))
+				{
+					SetCurrentDirectory(staff_no);
+
+				}else{
+					AfxMessageBox("创建员工脸部特征资源文件夹失败");
+					return;
+				}
+			}else{
+				SetCurrentDirectory(staff_no);
+				utils.DeletePath(staff_no);
+			}
+			
+			//迭代保存图片
+			vector<Mat>::iterator iter;
+			vector<int> compression_params;
+			compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+			compression_params.push_back(9);    //png格式下，默认的参数为3.
+			int i = 1;
+			CString SerialNum;
+			CString fileName;
+			for (iter = preprocessedFaces.begin();iter!=preprocessedFaces.end();iter++)
+			{
+				SerialNum.Format("%d",i);
+				fileName = staff_no + "_" + SerialNum + ".png";
+				try {
+					imwrite(fileName.GetBuffer(fileName.GetLength()), *iter, compression_params);
+					++i;
+				}
+				catch (runtime_error& ex) {
+					
+				}
+			}
+			CString facePath = path + "\\" + "\\" + staff_no;
+			utils.SaveFacePath(staff_no,facePath);
+			SetCurrentDirectory("\.\.\\\.\.");
 			AfxMessageBox("提取特征完成");
-			isFinished = true;
 			return;
 		}
 		img = &IplImage(displayedFrame);
@@ -157,7 +207,9 @@ BOOL CRegisterFaceDlg::OnInitDialog()
 	pDc = GetDlgItem(IDC_IMAGE)->GetDC();
 	hDc = pDc->GetSafeHdc();
 	GetDlgItem(IDC_IMAGE)->GetClientRect(&rect);
-	isFinished = false;
+
+	InitUtils initUtils;
+	initUtils.initDetectors(faceCascade,eyeCascade1,eyeCascade2,faceCascadeFilename,eyeCascadeFilename1,eyeCascadeFilename2);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
