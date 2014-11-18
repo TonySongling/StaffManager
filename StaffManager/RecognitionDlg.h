@@ -49,6 +49,12 @@ public:
 
 	int DESIRED_CAMERA_WIDTH;
 	int DESIRED_CAMERA_HEIGHT;
+
+	vector<Mat> preprocessFaces;
+	vector<int> facelabels;
+
+	Ptr<FaceRecognizer> model;
+
 	CRecognitionDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CRecognitionDlg();
 

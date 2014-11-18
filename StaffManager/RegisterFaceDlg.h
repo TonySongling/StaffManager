@@ -59,5 +59,4 @@ public:
 	afx_msg void OnBnClickedAddButton();
 	virtual BOOL OnInitDialog();
 	void readStaff(CListCtrl* pList);
-	afx_msg void OnBnClickedFinishButton();
 };

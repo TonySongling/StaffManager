@@ -2,6 +2,7 @@
 #include "afxdialogex.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include <sstream>
 #include "Staff.h"
 #include "Face.h"
 #include "opencv2/opencv.hpp"
@@ -24,10 +25,11 @@ public:
 
 	void DrawPicToHDC(CDC *pDc, Mat &cameraFrame, UINT ID);
 	void GetPreprocessFaces(vector<Mat> &preprocessedFaces, Mat &displayedFrame, int faceWidth, CascadeClassifier &faceCascade, CascadeClassifier &eyeCascade1, CascadeClassifier &eyeCascade2, Rect &faceRect, Point &leftEye, Point &rightEye, Rect &searchedLeftEye, Rect &searchedRightEye,Mat &old_prepreprocessedFace, double &old_time);
-	void SaveFaceFeatures(vector<Mat> &preprocessedFaces);
 	bool CreatePath(CString m_strFolderPath);
 	void DeletePath(CString sPath);
 	void SaveFacePath(CString staff_no, CString face_path);
 	vector<Face> GetAllFaces();
 	Ptr<FaceRecognizer> GetTrainModel(vector<Mat> &preprocessedFaces, vector<int> &facelabels);
+	CString GetStaffNoByFaceId(int face_id);
+	Staff GetStaffByStaffNo(CString staff_no);
 };

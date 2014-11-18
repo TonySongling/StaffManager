@@ -4,11 +4,13 @@ class Face
 public:
 	Face(void);
 	~Face(void);
+private:
 	// 工号
 	CString staff_no;
 	// 脸部特征资源文件路径
 	CString face_path;
 	int face_id;
+public:
 	void SetStaffNo(CString staff_no);
 	void SetFacePath(CString face_path);
 	void SetFaceId(int face_id);

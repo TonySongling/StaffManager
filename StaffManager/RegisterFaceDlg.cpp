@@ -39,7 +39,6 @@ void CRegisterFaceDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CRegisterFaceDlg, CDialogEx)
 	ON_BN_CLICKED(ID_ADD_BUTTON, &CRegisterFaceDlg::OnBnClickedAddButton)
-	ON_BN_CLICKED(IDC_FINISH_BUTTON, &CRegisterFaceDlg::OnBnClickedFinishButton)
 END_MESSAGE_MAP()
 
 
@@ -242,10 +241,4 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 	else{
 		MessageBox("ÏµÍ³³ö´í");
 	}
-}
-
-
-void CRegisterFaceDlg::OnBnClickedFinishButton()
-{
-	
 }

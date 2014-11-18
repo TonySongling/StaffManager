@@ -6,7 +6,7 @@ Utils::Utils(void)
 {
 	CHANGE_IN_IMAGE_FOR_COLLECTION = 0.3;
 	CHANGE_IN_SECONDS_FOR_COLLECTION = 1.0;
-	facerecAlgorithm = "FaceRecognizer.LBPH";
+	facerecAlgorithm = "FaceRecognizer.Eigenfaces";
 }
 
 
@@ -78,11 +78,6 @@ void Utils::GetPreprocessFaces(vector<Mat> &preprocessedFaces, Mat &displayedFra
 		}
 	}
 
-}
-
-
-void Utils::SaveFaceFeatures(vector<Mat> &preprocessedFaces)
-{
 }
 
 
@@ -223,6 +218,108 @@ Ptr<FaceRecognizer> Utils::GetTrainModel(vector<Mat> &preprocessedFaces, vector<
 	if (haveEnoughData)
 	{
 		model = recog.learnCollectedFaces(preprocessedFaces, facelabels, facerecAlgorithm);
+		return model;
 	}
-	return model;
+	return Ptr<FaceRecognizer>();
+}
+
+
+CString Utils::GetStaffNoByFaceId(int face_id)
+{
+	CString staff_no;
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+	mysql_init(&mysql);
+
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		string str = "select staff_no from t_face where face_id = ";
+		ostringstream m_sql;
+		m_sql << str <<face_id;
+		string sql;
+		sql += m_sql.str();
+
+		mysql_query(&mysql,sql.c_str());
+
+		result = mysql_store_result(&mysql);
+		int fieldcount = mysql_num_fields(result);
+		MYSQL_ROW row = NULL;
+		row = mysql_fetch_row(result);
+		while(NULL != row)
+		{
+			for(int i=0; i<fieldcount; i++)
+			{
+				staff_no = row[i];
+			}
+			row = mysql_fetch_row(result);
+		}
+		mysql_close(&mysql);
+		return staff_no;
+	}
+	else{
+		AfxMessageBox("系统出错");
+	}
+	return CString();
+}
+
+
+Staff Utils::GetStaffByStaffNo(CString staff_no)
+{
+	Staff staff;
+	staff.setNo(staff_no);
+
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+	mysql_init(&mysql);
+
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		string sql = "select staff_name, staff_sex, staff_duty, staff_tel from t_staff where staff_no = ";
+		sql.append(1,'\'').append(staff_no).append(1,'\'');
+
+		mysql_query(&mysql,sql.c_str());
+
+		result = mysql_store_result(&mysql);
+		int fieldcount = mysql_num_fields(result);
+		MYSQL_ROW row = NULL;
+		row = mysql_fetch_row(result);
+		while(NULL != row)
+		{
+			for(int i=0; i<fieldcount; i++)
+			{
+				switch(i){
+				case 0:
+					staff.setName(row[i]);
+					break;
+				case 1:
+					staff.setSex(row[i]);
+					break;
+				case 2:
+					staff.setDuty(row[i]);
+					break;
+				case 3:
+					staff.setTel(row[i]);
+				}
+			}
+			row = mysql_fetch_row(result);
+		}
+		mysql_close(&mysql);
+		return staff;
+	}
+	else{
+		AfxMessageBox("系统出错");
+	}
+	return Staff();
 }
