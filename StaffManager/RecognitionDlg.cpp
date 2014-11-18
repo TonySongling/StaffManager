@@ -44,6 +44,8 @@ void CRecognitionDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRecognitionDlg, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &CRecognitionDlg::OnBnClickedCancel)
 	ON_BN_CLICKED(ID_RECOGNITION, &CRecognitionDlg::OnBnClickedRecognition)
+	ON_WM_PAINT()
+	ON_WM_NCHITTEST()
 END_MESSAGE_MAP()
 
 
@@ -133,7 +135,7 @@ void CRecognitionDlg::OnBnClickedRecognition()
 				SetDlgItemText(IDC_SEX_EDIT,staff.getSex());
 				SetDlgItemText(IDC_DUTY_EDIT,staff.getDuty());
 				SetDlgItemText(IDC_TEL_EDIT,staff.getTel());
-				AfxMessageBox("验证通过");
+				AfxMessageBox("验证通过",MB_OK);
 				return;
 			}
 			else {
@@ -201,6 +203,49 @@ BOOL CRecognitionDlg::OnInitDialog()
 	//获取后续匹配所需的model
 	model = utils.GetTrainModel(preprocessFaces,facelabels);
 
+	//设置窗口背景
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BG_BITMAP);
+	m_dc.CreateCompatibleDC(NULL);
+	m_dc.SelectObject(&bmp);
+	BITMAP bm;
+	bmp.GetBitmap(&bm);
+	m_size.cx = bm.bmWidth;
+	m_size.cy = bm.bmHeight;
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
+}
+
+
+void CRecognitionDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+	//画背景
+	dc.BitBlt(0,0,m_size.cx,m_size.cy,&m_dc,0,0,SRCCOPY);
+
+	//画标题栏
+	CRect rect;
+	GetClientRect(rect);
+	rect.bottom = 50;
+	dc.FillSolidRect(rect,RGB(80,70,66));
+	CString str = "员工身份验证";
+	dc.SetTextColor(RGB(227,223,221));
+	dc.DrawText(str,rect,DT_CENTER|DT_VCENTER|DT_SINGLELINE);
+}
+
+
+LRESULT CRecognitionDlg::OnNcHitTest(CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	UINT nHitTest = CDialogEx::OnNcHitTest(point);
+	CRect rect;
+	GetClientRect(&rect);
+	rect.bottom=50;
+	ScreenToClient(&point);
+	if(rect.PtInRect(point))
+	{
+		if(nHitTest == HTCLIENT)
+			nHitTest = HTCAPTION;
+	}
+	return nHitTest;
 }

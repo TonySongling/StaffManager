@@ -179,8 +179,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="res\bg.bmp" />
+    <None Include="res\bitmap1.bmp" />
     <None Include="res\StaffManager.ico" />
     <None Include="res\StaffManager.rc2" />
+    <None Include="res\video.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddDlg.h" />

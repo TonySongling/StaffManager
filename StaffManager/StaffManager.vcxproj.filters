@@ -22,6 +22,15 @@
     <None Include="res\StaffManager.ico">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="res\bg.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\bitmap1.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="res\video.bmp">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StaffManager.h">

@@ -55,6 +55,9 @@ public:
 
 	Ptr<FaceRecognizer> model;
 
+	CDC m_dc;
+	CSize m_size;
+
 	CRecognitionDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CRecognitionDlg();
 
@@ -69,4 +72,6 @@ public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnBnClickedRecognition();
 	virtual BOOL OnInitDialog();
+	afx_msg void OnPaint();
+	afx_msg LRESULT OnNcHitTest(CPoint point);
 };
