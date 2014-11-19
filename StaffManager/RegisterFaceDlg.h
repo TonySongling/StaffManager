@@ -16,7 +16,7 @@
 #include "Utils.h"
 using namespace cv;
 using namespace std;
-// CRegisterFaceDlg ¶Ô»°¿ò
+// CRegisterFaceDlg å¯¹è¯æ¡†
 
 class CRegisterFaceDlg : public CDialogEx
 {
@@ -45,17 +45,17 @@ public:
 
 	int DESIRED_CAMERA_WIDTH ;
 	int DESIRED_CAMERA_HEIGHT ;
-	CRegisterFaceDlg(CWnd* pParent = NULL);   // ±ê×¼¹¹Ôìº¯Êı
+	CRegisterFaceDlg(CWnd* pParent = NULL);   // æ ‡å‡†æ„é€ å‡½æ•°
 	virtual ~CRegisterFaceDlg();
 
-// ¶Ô»°¿òÊı¾İ
+// å¯¹è¯æ¡†æ•°æ®
 	enum { IDD = IDD_INPUT_FACE_DIALOG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV æ”¯æŒ
 
 	DECLARE_MESSAGE_MAP()
-public:
+public:  
 	afx_msg void OnBnClickedAddButton();
 	virtual BOOL OnInitDialog();
 	void readStaff(CListCtrl* pList);
