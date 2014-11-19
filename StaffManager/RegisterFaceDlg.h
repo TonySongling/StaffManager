@@ -55,7 +55,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
-public:  
+public:   
 	afx_msg void OnBnClickedAddButton();
 	virtual BOOL OnInitDialog();
 	void readStaff(CListCtrl* pList);
