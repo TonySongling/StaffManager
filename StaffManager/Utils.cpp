@@ -32,7 +32,7 @@ void Utils::GetPreprocessFaces(vector<Mat> &preprocessedFaces, Mat &displayedFra
 	if (preprocessedFace.data)
 		gotFaceAndEyes = true;
 
-	//»­³ö¼ì²âµ½µÄÁ³ºÍÑÛ¾¦
+	//ç”»å‡ºæ£€æµ‹åˆ°çš„è„¸å’Œçœ¼ç›
 	if (faceRect.width > 0) {
 		rectangle(displayedFrame, faceRect, CV_RGB(255, 255, 0), 2, CV_AA);
 
@@ -62,7 +62,7 @@ void Utils::GetPreprocessFaces(vector<Mat> &preprocessedFaces, Mat &displayedFra
 		if ((imageDiff > CHANGE_IN_IMAGE_FOR_COLLECTION) && (timeDiff_seconds > CHANGE_IN_SECONDS_FOR_COLLECTION)) {
 			// Also add the mirror image to the training set, so we have more training data, as well as to deal with faces looking to the left or right.
 			Mat mirroredFace;
-			flip(preprocessedFace, mirroredFace, 1);//Í¼Ïñ·´×ª
+			flip(preprocessedFace, mirroredFace, 1);//å›¾åƒåè½¬
 
 			// Add the face images to the list of detected faces.
 			preprocessedFaces.push_back(preprocessedFace);
@@ -101,19 +101,19 @@ void Utils::DeletePath(CString sPath)
 	while (IsFinded)    
 	{    
 		IsFinded = tempFind.FindNextFile();    
-		//µ±Õâ¸öÄ¿Â¼ÖĞ²»º¬ÓĞ.µÄÊ±ºò£¬¾ÍÊÇËµÕâ²»ÊÇÒ»¸öÎÄ¼ş¡£  
+		//å½“è¿™ä¸ªç›®å½•ä¸­ä¸å«æœ‰.çš„æ—¶å€™ï¼Œå°±æ˜¯è¯´è¿™ä¸æ˜¯ä¸€ä¸ªæ–‡ä»¶ã€‚  
 		if (!tempFind.IsDots())    
 		{    
 			char sFoundFileName[200];     
 			strcpy(sFoundFileName,tempFind.GetFileName().GetBuffer(200));  
-			//Èç¹ûÊÇÄ¿Â¼ÄÇÃ´É¾³ıÄ¿Â¼  
+			//å¦‚æœæ˜¯ç›®å½•é‚£ä¹ˆåˆ é™¤ç›®å½•  
 			if (tempFind.IsDirectory())    
 			{     
 				char sTempDir[200];       
 				sprintf(sTempDir,"%s\\%s",sPath,sFoundFileName);    
-				DeletePath(sTempDir); //ÆäÊµÕæÕıÉ¾³ıÎÄ¼şµÄÒ²¾ÍÕâÁ½¾ä£¬±ğµÄ¶¼ÊÇÅã³Ä  
+				DeletePath(sTempDir); //å…¶å®çœŸæ­£åˆ é™¤æ–‡ä»¶çš„ä¹Ÿå°±è¿™ä¸¤å¥ï¼Œåˆ«çš„éƒ½æ˜¯é™ªè¡¬  
 			}    
-			//Èç¹ûÊÇÎÄ¼şÄÇÃ´É¾³ıÎÄ¼ş  
+			//å¦‚æœæ˜¯æ–‡ä»¶é‚£ä¹ˆåˆ é™¤æ–‡ä»¶  
 			else      
 			{     
 				char sTempFileName[200];      
@@ -123,7 +123,7 @@ void Utils::DeletePath(CString sPath)
 		}    
 	}    
 	tempFind.Close(); 
-	RemoveDirectory(sPath); 
+    	RemoveDirectory(sPath);      
 }
 
 
@@ -148,7 +148,7 @@ void Utils::SaveFacePath(CString staff_no, CString face_path)
 		mysql_close(&mysql);
 	}
 	else{
-		AfxMessageBox("ÏµÍ³³ö´í");
+		AfxMessageBox("ç³»ç»Ÿå‡ºé”™");
 		return;
 	}
 }
@@ -200,7 +200,7 @@ vector<Face> Utils::GetAllFaces()
 		return faces;
 	}
 	else{
-		AfxMessageBox("ÏµÍ³³ö´í");
+		AfxMessageBox("ç³»ç»Ÿå‡ºé”™");
 		return vector<Face>();
 	}
 
@@ -264,7 +264,7 @@ CString Utils::GetStaffNoByFaceId(int face_id)
 		return staff_no;
 	}
 	else{
-		AfxMessageBox("ÏµÍ³³ö´í");
+		AfxMessageBox("ç³»ç»Ÿå‡ºé”™");
 	}
 	return CString();
 }
@@ -320,7 +320,7 @@ Staff Utils::GetStaffByStaffNo(CString staff_no)
 		return staff;
 	}
 	else{
-		AfxMessageBox("ÏµÍ³³ö´í");
+		AfxMessageBox("ç³»ç»Ÿå‡ºé”™");
 	}
 	return Staff();
 }
