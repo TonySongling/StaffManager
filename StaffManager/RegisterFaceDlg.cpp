@@ -1,12 +1,12 @@
-// RegisterFaceDlg.cpp : ÊµÏÖÎÄ¼ş
-//
+// RegisterFaceDlg.cpp : å®ç°æ–‡ä»¶
+//   
 
 #include "stdafx.h"
 #include "StaffManager.h"
 #include "RegisterFaceDlg.h"
 #include "afxdialogex.h"
 
-// CRegisterFaceDlg ¶Ô»°¿ò
+// CRegisterFaceDlg å¯¹è¯æ¡†
 
 IMPLEMENT_DYNAMIC(CRegisterFaceDlg, CDialogEx)
 
@@ -43,7 +43,7 @@ BEGIN_MESSAGE_MAP(CRegisterFaceDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CRegisterFaceDlg ÏûÏ¢´¦Àí³ÌĞò
+// CRegisterFaceDlg æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 
 
@@ -53,12 +53,12 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 	int nSel = m_list->GetNextSelectedItem(pos);
 	if (nSel < 0)
 	{
-		MessageBox("ÇëÑ¡ÖĞÒ»ÏîÔÙ½øĞĞ²Ù×÷");
+		MessageBox("è¯·é€‰ä¸­ä¸€é¡¹å†è¿›è¡Œæ“ä½œ");
 		return;
 	}
 	CString staff_no = m_list->GetItemText(nSel,0);
 
-	//´´½¨Face×ÊÔ´ÎÄ¼ş¼Ğ
+	//åˆ›å»ºFaceèµ„æºæ–‡ä»¶å¤¹
 	Utils utils;
 	CString path = "Face";
 	if (!PathFileExists(path))
@@ -67,7 +67,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 		{
 			SetCurrentDirectory(path);
 		}else{
-			AfxMessageBox("´´½¨×ÊÔ´ÎÄ¼ş¼ĞÊ§°Ü");
+			AfxMessageBox("åˆ›å»ºèµ„æºæ–‡ä»¶å¤¹å¤±è´¥");
 			return;
 		}
 	}else{
@@ -78,7 +78,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 
 	InitUtils initUtils;
 	int cameraNumber = 0;
-	//³õÊ¼»¯ÉãÏñÍ·
+	//åˆå§‹åŒ–æ‘„åƒå¤´
 	if(!initUtils.initWebcam(videoCapture,cameraNumber))
 		return;
 
@@ -100,7 +100,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 	{
 		videoCapture >> cameraFrame;
 		if( cameraFrame.empty() ) {
-			AfxMessageBox("»ñÈ¡Í¼ÏñÊ§°Ü");
+			AfxMessageBox("è·å–å›¾åƒå¤±è´¥");
 			return;
 		}
 		cameraFrame.copyTo(displayedFrame);
@@ -108,7 +108,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 		utils.GetPreprocessFaces(preprocessedFaces, displayedFrame, faceWidth, faceCascade, eyeCascade1, eyeCascade2, faceRect, leftEye,  rightEye,  searchedLeftEye, searchedRightEye, old_prepreprocessedFace, old_time);
 		if ((preprocessedFaces.size()/2) == 5)
 		{
-			//´´½¨Ô±¹¤Á³²¿ÌØÕ÷×ÊÔ´ÎÄ¼ş¼Ğ
+			//åˆ›å»ºå‘˜å·¥è„¸éƒ¨ç‰¹å¾èµ„æºæ–‡ä»¶å¤¹
 			if (!PathFileExists(staff_no))
 			{
 				if (utils.CreatePath(staff_no))
@@ -116,7 +116,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 					SetCurrentDirectory(staff_no);
 
 				}else{
-					AfxMessageBox("´´½¨Ô±¹¤Á³²¿ÌØÕ÷×ÊÔ´ÎÄ¼ş¼ĞÊ§°Ü");
+					AfxMessageBox("åˆ›å»ºå‘˜å·¥è„¸éƒ¨ç‰¹å¾èµ„æºæ–‡ä»¶å¤¹å¤±è´¥");
 					return;
 				}
 			}else{
@@ -124,11 +124,11 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 				utils.DeletePath(staff_no);
 			}
 			
-			//µü´ú±£´æÍ¼Æ¬
+			//è¿­ä»£ä¿å­˜å›¾ç‰‡
 			vector<Mat>::iterator iter;
 			vector<int> compression_params;
 			compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
-			compression_params.push_back(9);    //png¸ñÊ½ÏÂ£¬Ä¬ÈÏµÄ²ÎÊıÎª3.
+			compression_params.push_back(9);    //pngæ ¼å¼ä¸‹ï¼Œé»˜è®¤çš„å‚æ•°ä¸º3.
 			int i = 1;
 			CString SerialNum;
 			CString fileName;
@@ -147,7 +147,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 			CString facePath = path + "\\" + "\\" + staff_no;
 			utils.SaveFacePath(staff_no,facePath);
 			SetCurrentDirectory("\.\.\\\.\.");
-			AfxMessageBox("ÌáÈ¡ÌØÕ÷Íê³É");
+			AfxMessageBox("æå–ç‰¹å¾å®Œæˆ");
 			return;
 		}
 		img = &IplImage(displayedFrame);
@@ -165,11 +165,11 @@ BOOL CRegisterFaceDlg::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	m_list = (CListCtrl*)GetDlgItem(IDC_INFO_LIST);
-	m_list->InsertColumn(0,"¹¤ºÅ",0,80);
-	m_list->InsertColumn(1,"ĞÕÃû",0,80);
-	m_list->InsertColumn(2,"ĞÔ±ğ",0,80);
-	m_list->InsertColumn(3,"Ö°³Æ",0,100);
-	m_list->InsertColumn(4,"µç»°",0,150);
+	m_list->InsertColumn(0,"å·¥å·",0,80);
+	m_list->InsertColumn(1,"å§“å",0,80);
+	m_list->InsertColumn(2,"æ€§åˆ«",0,80);
+	m_list->InsertColumn(3,"èŒç§°",0,100);
+	m_list->InsertColumn(4,"ç”µè¯",0,150);
 	readStaff(m_list);
 
 	pDc = GetDlgItem(IDC_IMAGE)->GetDC();
@@ -179,7 +179,7 @@ BOOL CRegisterFaceDlg::OnInitDialog()
 	InitUtils initUtils;
 	initUtils.initDetectors(faceCascade,eyeCascade1,eyeCascade2,faceCascadeFilename,eyeCascadeFilename1,eyeCascadeFilename2);
 	return TRUE;  // return TRUE unless you set the focus to a control
-	// Òì³£: OCX ÊôĞÔÒ³Ó¦·µ»Ø FALSE
+	// å¼‚å¸¸: OCX å±æ€§é¡µåº”è¿”å› FALSE
 }
 
 
@@ -241,25 +241,25 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 
 	}
 	else{
-		MessageBox("ÏµÍ³³ö´í");
+		MessageBox("ç³»ç»Ÿå‡ºé”™");
 	}
 }
 
 
 void CRegisterFaceDlg::OnBnClickedDeleteButton()
 {
-	// TODO: ÔÚ´ËÌí¼Ó¿Ø¼şÍ¨Öª´¦Àí³ÌĞò´úÂë
+	// TODO: åœ¨æ­¤æ·»åŠ æ§ä»¶é€šçŸ¥å¤„ç†ç¨‹åºä»£ç 
 
 	POSITION pos = m_list->GetFirstSelectedItemPosition();
 	int nSel = m_list->GetNextSelectedItem(pos);
 	if (nSel < 0)
 	{
-		MessageBox("ÇëÑ¡ÖĞÒ»ÏîÔÙ½øĞĞ²Ù×÷");
+		MessageBox("è¯·é€‰ä¸­ä¸€é¡¹å†è¿›è¡Œæ“ä½œ");
 		return;
 	}
 	CString staff_no = m_list->GetItemText(nSel,0);
-	//Á¬½ÓÊı¾İ¿â ÏÈÉ¾³ıstaff_no ¶ÔÓ¦ÏÂface_pathÏÂËùÓĞµÄÎÄ¼ş ÔÙ´ÓÊı¾İ¿âÖĞÉ¾³ı t_staff±íÖĞstaff_no ËùÔÚÒ»ĞĞ£¬É¾³ıt_face±íÖĞstaff_no ËùÔÚÒ»ĞĞ
-	//¸üĞÂÊı¾İ¿â£¬ÔÚ¶Ô»°¿òÉÏÈ¥µôËùÉ¾³ıµÄ¼ÇÂ¼
+	//è¿æ¥æ•°æ®åº“ å…ˆåˆ é™¤staff_no å¯¹åº”ä¸‹face_pathä¸‹æ‰€æœ‰çš„æ–‡ä»¶ å†ä»æ•°æ®åº“ä¸­åˆ é™¤ t_staffè¡¨ä¸­staff_no æ‰€åœ¨ä¸€è¡Œï¼Œåˆ é™¤t_faceè¡¨ä¸­staff_no æ‰€åœ¨ä¸€è¡Œ
+	//æ›´æ–°æ•°æ®åº“ï¼Œåœ¨å¯¹è¯æ¡†ä¸Šå»æ‰æ‰€åˆ é™¤çš„è®°å½•
 	
 	MYSQL mysql;
 	MYSQL_RES *result = NULL;
@@ -273,7 +273,7 @@ void CRegisterFaceDlg::OnBnClickedDeleteButton()
 	int port = sqlutils->getPort();	
     if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
-		    //É¾³ıÄ¿Â¼
+		    //åˆ é™¤ç›®å½•
 		string str = "select face_path from t_face where staff_no = ";
 		ostringstream m_sql;
 		m_sql << str <<staff_no;
@@ -287,29 +287,29 @@ void CRegisterFaceDlg::OnBnClickedDeleteButton()
 		Utils utils;
 		if(row==NULL)
 		{
-			//AfxMessageBox("ÇëÏÈµÇ¼Ç");  //Èç¹ûÎª¿ÕÊ²Ã´Ò²²»×ö
+			//AfxMessageBox("è¯·å…ˆç™»è®°");  //å¦‚æœä¸ºç©ºä»€ä¹ˆä¹Ÿä¸åš
 		}else{
 	      utils.DeletePath(row[0]);
-		  AfxMessageBox("É¾³ıÄ¿Â¼³É¹¦");
+		  AfxMessageBox("åˆ é™¤ç›®å½•æˆåŠŸ");
 		}
 		if(result!=NULL) 
-		mysql_free_result(result);//ÊÍ·Å½á¹û×ÊÔ´ 
+		mysql_free_result(result);//é‡Šæ”¾ç»“æœèµ„æº 
 
-		//É¾³ı¼ÇÂ¼
+		//åˆ é™¤è®°å½•
 		CString strSQL;
 		CString str_PreName= staff_no;
 		strSQL.Format("delete from t_face where staff_no=\'%s\'",str_PreName); 
 		if(mysql_real_query(&mysql,(char*)(LPCTSTR)strSQL,(UINT)strSQL.GetLength())!=0)
 		{
-			AfxMessageBox("É¾³ı¼ÇÂ¼Ê§°Ü");  
+			AfxMessageBox("åˆ é™¤è®°å½•å¤±è´¥");  
 		}
 		strSQL.Format("delete from t_staff where staff_no=\'%s\'",str_PreName);
 		if(mysql_real_query(&mysql,(char*)(LPCTSTR)strSQL,(UINT)strSQL.GetLength())!=0)
 		{
-			AfxMessageBox("É¾³ı¼ÇÂ¼Ê§°Ü");  
+			AfxMessageBox("åˆ é™¤è®°å½•å¤±è´¥");  
 		}else{
 			
-			AfxMessageBox("É¾³ı¼ÇÂ¼³É¹¦"); 
+			AfxMessageBox("åˆ é™¤è®°å½•æˆåŠŸ"); 
 		}
 
 	
@@ -319,7 +319,7 @@ void CRegisterFaceDlg::OnBnClickedDeleteButton()
 		mysql_close(&mysql);
 	}
 	else{
-		AfxMessageBox("ÏµÍ³³ö´í");
+		AfxMessageBox("ç³»ç»Ÿå‡ºé”™");
 		return;
 	}
 
