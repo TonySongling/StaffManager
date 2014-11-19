@@ -13,9 +13,9 @@ class recognition
 public:
 	recognition(void);
 	~recognition(void);
-	Mat reconstructFace(const Ptr<FaceRecognizer> model, const Mat preprocessedFace);
-	double getSimilarity(const Mat A, const Mat B);
-	Ptr<FaceRecognizer> learnCollectedFaces(const vector<Mat> preprocessedFaces, const vector<int> faceLabels, const string facerecAlgorithm = "FaceRecognizer.Eigenfaces");
+	Mat reconstructFace(Ptr<FaceRecognizer> &model, Mat &preprocessedFace);
+	double getSimilarity(Mat A, Mat B);
+	Ptr<FaceRecognizer> learnCollectedFaces(vector<Mat> &preprocessedFaces, vector<int> &faceLabels, string facerecAlgorithm);
 	Mat getImageFrom1DFloatMat(const Mat matrixRow, int height);
 };
 

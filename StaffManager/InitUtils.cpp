@@ -43,7 +43,7 @@ void InitUtils::initDetectors(CascadeClassifier &faceCascade, CascadeClassifier 
 }
 
 
-BOOL InitUtils::initWebcam(VideoCapture &videoCapture, int cameraNumber)
+bool InitUtils::initWebcam(VideoCapture &videoCapture, int cameraNumber)
 {
 	// Get access to the default camera.
 	try {

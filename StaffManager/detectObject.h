@@ -15,7 +15,7 @@ public:
 	~detectObject(void);
 
 
-	void detectLargestObject(const Mat &img, CascadeClassifier &cascade, Rect &largestObject, int scaledWidth = 320);
-	void detectObjectsCustom(const Mat &img, CascadeClassifier &cascade, vector<Rect> &objects, int scaledWidth, int flags, Size minFeatureSize, float searchScaleFactor, int minNeighbors);
+	void detectLargestObject(Mat &img, CascadeClassifier &cascade, Rect &largestObject, int scaledWidth = 320);
+	void detectObjectsCustom(Mat &img, CascadeClassifier &cascade, vector<Rect> &objects, int scaledWidth, int flags, Size minFeatureSize, float searchScaleFactor, int minNeighbors);
 };
 

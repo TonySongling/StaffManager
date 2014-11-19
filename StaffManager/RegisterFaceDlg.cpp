@@ -6,52 +6,6 @@
 #include "RegisterFaceDlg.h"
 #include "afxdialogex.h"
 
-// The Face Recognition algorithm can be one of these and perhaps more, depending on your version of OpenCV, which must be atleast v2.4.1:
-//    "FaceRecognizer.Eigenfaces":  Eigenfaces, also referred to as PCA (Turk and Pentland, 1991).
-//    "FaceRecognizer.Fisherfaces": Fisherfaces, also referred to as LDA (Belhumeur et al, 1997).
-//    "FaceRecognizer.LBPH":        Local Binary Pattern Histograms (Ahonen et al, 2006).
-const char *facerecAlgorithm = "FaceRecognizer.Fisherfaces";
-//const char *facerecAlgorithm = "FaceRecognizer.Eigenfaces";
-
-
-// Sets how confident the Face Verification algorithm should be to decide if it is an unknown person or a known person.
-// A value roughly around 0.5 seems OK for Eigenfaces or 0.7 for Fisherfaces, but you may want to adjust it for your
-// conditions, and if you use a different Face Recognition algorithm.
-// Note that a higher threshold value means accepting more faces as known people,
-// whereas lower values mean more faces will be classified as "unknown".
-const float UNKNOWN_PERSON_THRESHOLD = 0.7f;
-
-
-// Cascade Classifier file, used for Face Detection.
-char *faceCascadeFilename = "lbpcascade_frontalface.xml";     // LBP face detector.
-//char *faceCascadeFilename = "haarcascade_frontalface_alt_tree.xml";  // Haar face detector.
-//char *eyeCascadeFilename1 = "haarcascade_lefteye_2splits.xml";   // Best eye detector for open-or-closed eyes.
-//char *eyeCascadeFilename2 = "haarcascade_righteye_2splits.xml";   // Best eye detector for open-or-closed eyes.
-//char *eyeCascadeFilename1 = "haarcascade_mcs_lefteye.xml";       // Good eye detector for open-or-closed eyes.
-//char *eyeCascadeFilename2 = "haarcascade_mcs_righteye.xml";       // Good eye detector for open-or-closed eyes.
-char *eyeCascadeFilename1 = "haarcascade_eye.xml";               // Basic eye detector for open eyes only.
-char *eyeCascadeFilename2 = "haarcascade_eye_tree_eyeglasses.xml"; // Basic eye detector for open eyes if they might wear glasses.
-VideoCapture videoCapture;
-
-// Set the desired face dimensions. Note that "getPreprocessedFace()" will return a square face.
-const int faceWidth = 70;
-const int faceHeight = faceWidth;
-
-const int DESIRED_CAMERA_WIDTH = 640;
-const int DESIRED_CAMERA_HEIGHT = 480;
-
-// Parameters controlling how often to keep new faces when collecting them. Otherwise, the training set could look to similar to each other!
-const double CHANGE_IN_IMAGE_FOR_COLLECTION = 0.3;      // How much the facial image should change before collecting a new face photo for training.
-const double CHANGE_IN_SECONDS_FOR_COLLECTION = 1.0;       // How much time must pass before collecting a new face photo for training.
-
-const char *windowName = "人脸特征提取";   // Name shown in the GUI window.
-const int BORDER = 8;  // Border between GUI elements to the edge of the image.
-
-const bool preprocessLeftAndRightSeparately = true;   // Preprocess left & right sides of the face separately, in case there is stronger light on one side.
-
-// Set to true if you want to see many windows created, showing various debug info. Set to 0 otherwise.
-bool m_debug = false;
-
 // CRegisterFaceDlg 对话框
 
 IMPLEMENT_DYNAMIC(CRegisterFaceDlg, CDialogEx)
@@ -59,7 +13,18 @@ IMPLEMENT_DYNAMIC(CRegisterFaceDlg, CDialogEx)
 CRegisterFaceDlg::CRegisterFaceDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CRegisterFaceDlg::IDD, pParent)
 {
+	// Cascade Classifier file, used for Face Detection.
+	faceCascadeFilename = "lbpcascade_frontalface.xml";     // LBP face detector.
+	eyeCascadeFilename1 = "haarcascade_eye.xml";               // Basic eye detector for open eyes only.
+	eyeCascadeFilename2 = "haarcascade_eye_tree_eyeglasses.xml"; // Basic eye detector for open eyes if they might wear glasses.
 
+
+	// Set the desired face dimensions. Note that "getPreprocessedFace()" will return a square face.
+	faceWidth = 70;
+	faceHeight = faceWidth;
+
+	DESIRED_CAMERA_WIDTH = 640;
+	DESIRED_CAMERA_HEIGHT = 480;
 }
 
 CRegisterFaceDlg::~CRegisterFaceDlg()
@@ -74,8 +39,7 @@ void CRegisterFaceDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CRegisterFaceDlg, CDialogEx)
 	ON_BN_CLICKED(ID_ADD_BUTTON, &CRegisterFaceDlg::OnBnClickedAddButton)
-	ON_BN_CLICKED(IDC_FINISH_BUTTON, &CRegisterFaceDlg::OnBnClickedFinishButton)
-	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_DELETE_BUTTON, &CRegisterFaceDlg::OnBnClickedDeleteButton)
 END_MESSAGE_MAP()
 
 
@@ -92,30 +56,107 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 		MessageBox("请选中一项再进行操作");
 		return;
 	}
+	CString staff_no = m_list->GetItemText(nSel,0);
 
-	CascadeClassifier faceCascade;
-	CascadeClassifier eyeCascade1;
-	CascadeClassifier eyeCascade2;
-	
+	//创建Face资源文件夹
+	Utils utils;
+	CString path = "Face";
+	if (!PathFileExists(path))
+	{
+		if (utils.CreatePath(path))
+		{
+			SetCurrentDirectory(path);
+		}else{
+			AfxMessageBox("创建资源文件夹失败");
+			return;
+		}
+	}else{
+		SetCurrentDirectory(path);
+	}
+
+	VideoCapture videoCapture;
 
 	InitUtils initUtils;
-	initUtils.initDetectors(faceCascade,eyeCascade1,eyeCascade2,faceCascadeFilename,eyeCascadeFilename1,eyeCascadeFilename2);
-
 	int cameraNumber = 0;
+	//初始化摄像头
 	if(!initUtils.initWebcam(videoCapture,cameraNumber))
 		return;
 
 	videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, DESIRED_CAMERA_WIDTH);
 	videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, DESIRED_CAMERA_HEIGHT);
 
-	//CDC *pDc = GetDlgItem(IDC_IMAGE)->GetDC();
-	//HDC hDc = pDc->GetSafeHdc();
-	//CRect rect;
-	//GetDlgItem(IDC_IMAGE)->GetClientRect(&rect);
-	//CvvImage cimg;
-	//IplImage *img;
 	
+	vector<Mat> preprocessedFaces;
+	Mat old_prepreprocessedFace;
+	Mat cameraFrame;
+	Mat displayedFrame;
+	// Find a face and preprocess it to have a standard size and contrast & brightness.
+	Rect faceRect;  // Position of detected face.
+	Rect searchedLeftEye, searchedRightEye; // top-left and top-right regions of the face, where eyes were searched.
+	Point leftEye, rightEye;    // Position of the detected eyes.
 
+	double old_time = 0;
+	while (true)
+	{
+		videoCapture >> cameraFrame;
+		if( cameraFrame.empty() ) {
+			AfxMessageBox("获取图像失败");
+			return;
+		}
+		cameraFrame.copyTo(displayedFrame);
+
+		utils.GetPreprocessFaces(preprocessedFaces, displayedFrame, faceWidth, faceCascade, eyeCascade1, eyeCascade2, faceRect, leftEye,  rightEye,  searchedLeftEye, searchedRightEye, old_prepreprocessedFace, old_time);
+		if ((preprocessedFaces.size()/2) == 5)
+		{
+			//创建员工脸部特征资源文件夹
+			if (!PathFileExists(staff_no))
+			{
+				if (utils.CreatePath(staff_no))
+				{
+					SetCurrentDirectory(staff_no);
+
+				}else{
+					AfxMessageBox("创建员工脸部特征资源文件夹失败");
+					return;
+				}
+			}else{
+				SetCurrentDirectory(staff_no);
+				utils.DeletePath(staff_no);
+			}
+			
+			//迭代保存图片
+			vector<Mat>::iterator iter;
+			vector<int> compression_params;
+			compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
+			compression_params.push_back(9);    //png格式下，默认的参数为3.
+			int i = 1;
+			CString SerialNum;
+			CString fileName;
+			for (iter = preprocessedFaces.begin();iter!=preprocessedFaces.end();iter++)
+			{
+				SerialNum.Format("%d",i);
+				fileName = staff_no + "_" + SerialNum + ".png";
+				try {
+					imwrite(fileName.GetBuffer(fileName.GetLength()), *iter, compression_params);
+					++i;
+				}
+				catch (runtime_error& ex) {
+					
+				}
+			}
+			CString facePath = path + "\\" + "\\" + staff_no;
+			utils.SaveFacePath(staff_no,facePath);
+			SetCurrentDirectory("\.\.\\\.\.");
+			AfxMessageBox("提取特征完成");
+			return;
+		}
+		img = &IplImage(displayedFrame);
+		cimg.CopyOf(img,3);
+		cimg.DrawToHDC(hDc,&rect);
+		
+		if( waitKey(30)>=0 ) 
+			break;
+	}
 }
 
 
@@ -135,15 +176,8 @@ BOOL CRegisterFaceDlg::OnInitDialog()
 	hDc = pDc->GetSafeHdc();
 	GetDlgItem(IDC_IMAGE)->GetClientRect(&rect);
 
-	Mat cameraFrame;
-		videoCapture >> cameraFrame;
-		img = &IplImage(cameraFrame);
-		cimg.CopyOf(img,3);
-		if(true){
-		cimg.DrawToHDC(hDc,&rect);
-		}
-	SetTimer(1,10,NULL);
-
+	InitUtils initUtils;
+	initUtils.initDetectors(faceCascade,eyeCascade1,eyeCascade2,faceCascadeFilename,eyeCascadeFilename1,eyeCascadeFilename2);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
 }
@@ -195,6 +229,7 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 				}
 			}
 			pList->InsertItem(j,staff.getNo());
+		//	pList->SetItemText(j,0,staff.getNo());
 			pList->SetItemText(j,1,staff.getName());
 			pList->SetItemText(j,2,staff.getSex());
 			pList->SetItemText(j,3,staff.getDuty());
@@ -211,20 +246,84 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 }
 
 
-void CRegisterFaceDlg::OnBnClickedFinishButton()
+void CRegisterFaceDlg::OnBnClickedDeleteButton()
 {
+	// TODO: 在此添加控件通知处理程序代码
+
+	POSITION pos = m_list->GetFirstSelectedItemPosition();
+	int nSel = m_list->GetNextSelectedItem(pos);
+	if (nSel < 0)
+	{
+		MessageBox("请选中一项再进行操作");
+		return;
+	}
+	CString staff_no = m_list->GetItemText(nSel,0);
+	//连接数据库 先删除staff_no 对应下face_path下所有的文件 再从数据库中删除 t_staff表中staff_no 所在一行，删除t_face表中staff_no 所在一行
+	//更新数据库，在对话框上去掉所删除的记录
 	
-}
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+
+	mysql_init(&mysql);
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();	
+    if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		    //删除目录
+		string str = "select face_path from t_face where staff_no = ";
+		ostringstream m_sql;
+		m_sql << str <<staff_no;
+		string sql;
+		sql += m_sql.str();
+		mysql_query(&mysql,sql.c_str());
+		result = mysql_store_result(&mysql);
+	//  int fieldcount = mysql_num_fields(result);
+		MYSQL_ROW row = NULL;
+		row = mysql_fetch_row(result);
+		Utils utils;
+		if(row==NULL)
+		{
+			//AfxMessageBox("请先登记");  //如果为空什么也不做
+		}else{
+	      utils.DeletePath(row[0]);
+		  AfxMessageBox("删除目录成功");
+		}
+		if(result!=NULL) 
+		mysql_free_result(result);//释放结果资源 
+
+		//删除记录
+		CString strSQL;
+		CString str_PreName= staff_no;
+		strSQL.Format("delete from t_face where staff_no=\'%s\'",str_PreName); 
+		if(mysql_real_query(&mysql,(char*)(LPCTSTR)strSQL,(UINT)strSQL.GetLength())!=0)
+		{
+			AfxMessageBox("删除记录失败");  
+		}
+		strSQL.Format("delete from t_staff where staff_no=\'%s\'",str_PreName);
+		if(mysql_real_query(&mysql,(char*)(LPCTSTR)strSQL,(UINT)strSQL.GetLength())!=0)
+		{
+			AfxMessageBox("删除记录失败");  
+		}else{
+			
+			AfxMessageBox("删除记录成功"); 
+		}
+
+	
+		UpdateData();
+		m_list->DeleteAllItems();
+		OnInitDialog();	
+		mysql_close(&mysql);
+	}
+	else{
+		AfxMessageBox("系统出错");
+		return;
+	}
 
 
-void CRegisterFaceDlg::OnTimer(UINT_PTR nIDEvent)
-{
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
-		Mat cameraFrame;
-		videoCapture >> cameraFrame;
-		img = &IplImage(cameraFrame);
-		cimg.CopyOf(img,3);
-		cimg.DrawToHDC(hDc,&rect);
-	
-	CDialogEx::OnTimer(nIDEvent);
+
+
 }

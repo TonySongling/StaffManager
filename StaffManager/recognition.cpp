@@ -12,10 +12,8 @@ recognition::~recognition(void)
 }
 
 
-Mat recognition::reconstructFace(const Ptr<FaceRecognizer> model, const Mat preprocessedFace)
+Mat recognition::reconstructFace(Ptr<FaceRecognizer> &model, Mat &preprocessedFace)
 {
-	// Since we can only reconstruct the face for some types of FaceRecognizer models (ie: Eigenfaces or Fisherfaces),
-	// we should surround the OpenCV calls by a try/catch block so we don't crash for other models.
 	try {
 
 		// Get some required data from the FaceRecognizer model.
@@ -52,7 +50,7 @@ Mat recognition::reconstructFace(const Ptr<FaceRecognizer> model, const Mat prep
 }
 
 
-double recognition::getSimilarity(const Mat A, const Mat B)
+double recognition::getSimilarity(Mat A, Mat B)
 {
 	if (A.rows > 0 && A.rows == B.rows && A.cols > 0 && A.cols == B.cols) {
 		// Calculate the L2 relative error between the 2 images.
@@ -68,11 +66,10 @@ double recognition::getSimilarity(const Mat A, const Mat B)
 }
 
 
-Ptr<FaceRecognizer> recognition::learnCollectedFaces(const vector<Mat> preprocessedFaces, const vector<int> faceLabels, const string facerecAlgorithm)
+Ptr<FaceRecognizer> recognition::learnCollectedFaces(vector<Mat> &preprocessedFaces, vector<int> &faceLabels, string facerecAlgorithm)
 {
 	Ptr<FaceRecognizer> model;
 
-	cout << "Learning the collected faces using the [" << facerecAlgorithm << "] algorithm ..." << endl;
 
 	// Make sure the "contrib" module is dynamically loaded at runtime.
 	bool haveContribModule = initModule_contrib();
@@ -90,9 +87,16 @@ Ptr<FaceRecognizer> recognition::learnCollectedFaces(const vector<Mat> preproces
 	}
 
 	// Do the actual training from the collected faces. Might take several seconds or minutes depending on input!
-	model->train(preprocessedFaces, faceLabels);
+	try
+	{
+		model->train(preprocessedFaces, faceLabels);
+		return model;
+	}
+	catch (CException* e)
+	{
 
-	return model;
+	}
+	return Ptr<FaceRecognizer>();
 }
 
 

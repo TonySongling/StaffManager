@@ -5,6 +5,7 @@
 #pragma once
 #include "AddDlg.h"
 #include "RegisterFaceDlg.h"
+#include "RecognitionDlg.h"
 // CStaffManagerDlg ¶Ô»°¿ò
 class CStaffManagerDlg : public CDialogEx
 {
@@ -32,4 +33,5 @@ protected:
 public:
 	afx_msg void OnBnClickedAdd();
 	afx_msg void OnBnClickedInputFaceButton();
+	afx_msg void OnBnClickedButton1();
 };

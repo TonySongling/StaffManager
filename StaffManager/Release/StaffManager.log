@@ -1,0 +1,42 @@
+﻿生成启动时间为 2014/11/18 22:25:52。
+     1>项目“E:\opencvproject\StaffManager1118\StaffManager\StaffManager.vcxproj”在节点 2 上(build 个目标)。
+     1>PrepareForBuild:
+         正在创建目录“E:\opencvproject\StaffManager1118\Release\”。
+       InitializeBuildStatus:
+         正在创建“Release\StaffManager.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         所有输出均为最新。
+         所有输出均为最新。
+       ResourceCompile:
+         所有输出均为最新。
+       Link:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\opencvproject\StaffManager1118\Release\StaffManager.exe" /INCREMENTAL:NO /NOLOGO libmysql.lib opencv_ml2410.lib opencv_calib3d2410.lib opencv_contrib2410.lib opencv_core2410.lib opencv_features2d2410.lib opencv_flann2410.lib opencv_gpu2410.lib opencv_highgui2410.lib opencv_imgproc2410.lib opencv_legacy2410.lib opencv_objdetect2410.lib opencv_ts2410.lib opencv_video2410.lib opencv_nonfree2410.lib opencv_ocl2410.lib opencv_photo2410.lib opencv_stitching2410.lib opencv_superres2410.lib opencv_videostab2410.lib /MANIFEST /ManifestFile:"Release\StaffManager.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\opencvproject\StaffManager1118\Release\StaffManager.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\opencvproject\StaffManager1118\Release\StaffManager.lib" /MACHINE:X86 Release\StaffManager.res
+         Release\AddDlg.obj
+         Release\CvvImage.obj
+         Release\detectObject.obj
+         Release\Face.obj
+         Release\InitUtils.obj
+         Release\LoginDlg.obj
+         Release\preprocessFace.obj
+         Release\recognition.obj
+         Release\RecognitionDlg.obj
+         Release\RegisterFaceDlg.obj
+         Release\SQLUtils.obj
+         Release\Staff.obj
+         Release\StaffManager.obj
+         Release\StaffManagerDlg.obj
+         Release\stdafx.obj
+         Release\Utils.obj
+         正在生成代码
+         已完成代码的生成
+         StaffManager.vcxproj -> E:\opencvproject\StaffManager1118\Release\StaffManager.exe
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\opencvproject\StaffManager1118\Release\StaffManager.exe;#1" /manifest Release\StaffManager.exe.intermediate.manifest "C:\Program Files\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
+       FinalizeBuildStatus:
+         正在删除文件“Release\StaffManager.unsuccessfulbuild”。
+         正在对“Release\StaffManager.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\opencvproject\StaffManager1118\StaffManager\StaffManager.vcxproj”(build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:02.81
