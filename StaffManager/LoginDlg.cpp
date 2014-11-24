@@ -15,6 +15,7 @@ IMPLEMENT_DYNAMIC(CLoginDlg, CDialogEx)
 
 CLoginDlg::CLoginDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CLoginDlg::IDD, pParent)
+	, m_ManagerName(_T(""))
 {
 
 }
@@ -43,9 +44,8 @@ void CLoginDlg::OnBnClickedOk()
 	
 	if (CheckUser())
 	{
-		CStaffManagerDlg dlg;
 		CDialogEx::OnOK();
-		dlg.DoModal();
+		m_StaffManageDlg.DoModal();
 	}else{
 		SetDlgItemText(IDC_PASSWORD_EDIT,"");
 		SetFocus();
@@ -83,6 +83,7 @@ BOOL CLoginDlg::CheckUser(void)
 		
 		if (mysql_num_rows(result)>0)
 		{
+			m_ManagerName = user_name;
 			mysql_close(&mysql);
 			return TRUE;
 		}else{

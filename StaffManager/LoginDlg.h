@@ -21,4 +21,6 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	BOOL CheckUser(void);
+	CStaffManagerDlg m_StaffManageDlg;
+	CString m_ManagerName;
 };

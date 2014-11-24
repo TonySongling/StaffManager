@@ -59,4 +59,5 @@ public:
 	afx_msg void OnBnClickedAddButton();
 	virtual BOOL OnInitDialog();
 	void readStaff(CListCtrl* pList);
+	void SetListItemName();
 };

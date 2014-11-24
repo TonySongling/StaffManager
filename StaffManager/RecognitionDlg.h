@@ -50,8 +50,6 @@ public:
 	int DESIRED_CAMERA_WIDTH;
 	int DESIRED_CAMERA_HEIGHT;
 
-	vector<Mat> preprocessFaces;
-	vector<int> facelabels;
 
 	Ptr<FaceRecognizer> model;
 
@@ -73,5 +71,5 @@ public:
 	afx_msg void OnBnClickedRecognition();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
-	afx_msg LRESULT OnNcHitTest(CPoint point);
+	void GetFacesModel(Ptr<FaceRecognizer> &FacesModel);
 };

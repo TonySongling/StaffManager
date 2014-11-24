@@ -87,6 +87,12 @@
     <ClInclude Include="Face.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="InfoManageDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStatisticsDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StaffManager.cpp">
@@ -135,6 +141,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Face.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoManageDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DataStatisticsDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

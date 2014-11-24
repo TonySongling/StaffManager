@@ -162,14 +162,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 BOOL CRegisterFaceDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	m_list = (CListCtrl*)GetDlgItem(IDC_INFO_LIST);
-	m_list->InsertColumn(0,"工号",0,80);
-	m_list->InsertColumn(1,"姓名",0,80);
-	m_list->InsertColumn(2,"性别",0,80);
-	m_list->InsertColumn(3,"职称",0,100);
-	m_list->InsertColumn(4,"电话",0,150);
-	readStaff(m_list);
+	SetListItemName();
 
 	pDc = GetDlgItem(IDC_IMAGE)->GetDC();
 	hDc = pDc->GetSafeHdc();
@@ -241,4 +234,14 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 	else{
 		MessageBox("系统出错");
 	}
+}
+
+void CRegisterFaceDlg::SetListItemName()
+{
+	m_list = (CListCtrl*)GetDlgItem(IDC_INFO_LIST);
+	m_list->InsertColumn(0,"工号",0,80);
+	m_list->InsertColumn(1,"姓名",0,80);
+	m_list->InsertColumn(2,"性别",0,80);
+	m_list->InsertColumn(3,"职称",0,80);
+	m_list->InsertColumn(4,"电话",0,120);
 }

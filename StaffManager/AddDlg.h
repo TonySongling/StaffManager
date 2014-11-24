@@ -1,6 +1,7 @@
 #pragma once
 #include "mysql.h"
 #include "SQLUtils.h"
+#include "infomanagedlg.h"
 // CAddDlg ¶Ô»°¿ò
 
 class CAddDlg : public CDialogEx
@@ -24,4 +25,8 @@ public:
 	virtual BOOL OnInitDialog();
 	BOOL checkNo(MYSQL mysql,SQLUtils* sqlutils,CString staff_no);
 	BOOL checkTel(MYSQL mysql,SQLUtils* sqlutils,CString staff_tel);
+	CInfoManageDlg* m_pInfoDlg;
+	BOOL modifyFlag;
+	CString no,name,sex,duty,tel;
+	int nSel;
 };

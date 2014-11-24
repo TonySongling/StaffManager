@@ -1,16 +1,15 @@
-﻿生成启动时间为 2014/11/18 22:36:04。
+﻿生成启动时间为 2014/11/24 22:33:09。
      1>项目“D:\项目\StaffManager\StaffManager\StaffManager.vcxproj”在节点 2 上(build 个目标)。
      1>InitializeBuildStatus:
          正在创建“x64\Debug\StaffManager.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
        ClCompile:
          所有输出均为最新。
-         D:\Program Files\VS2010\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"x64\Debug\StaffManager.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /errorReport:prompt RecognitionDlg.cpp
+         D:\Program Files\VS2010\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"x64\Debug\StaffManager.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /errorReport:prompt RecognitionDlg.cpp
          RecognitionDlg.cpp
-     1>RecognitionDlg.cpp(193): warning C4129: “.”: 不可识别的字符转义序列
-     1>RecognitionDlg.cpp(193): warning C4129: “.”: 不可识别的字符转义序列
-     1>RecognitionDlg.cpp(193): warning C4129: “.”: 不可识别的字符转义序列
-     1>RecognitionDlg.cpp(193): warning C4129: “.”: 不可识别的字符转义序列
-     1>RecognitionDlg.cpp(240): warning C4244: “初始化”: 从“LRESULT”转换到“UINT”，可能丢失数据
+     1>RecognitionDlg.cpp(219): warning C4129: “.”: 不可识别的字符转义序列
+     1>RecognitionDlg.cpp(219): warning C4129: “.”: 不可识别的字符转义序列
+     1>RecognitionDlg.cpp(219): warning C4129: “.”: 不可识别的字符转义序列
+     1>RecognitionDlg.cpp(219): warning C4129: “.”: 不可识别的字符转义序列
        ResourceCompile:
          所有输出均为最新。
        ManifestResourceCompile:
@@ -20,8 +19,10 @@
          x64\Debug\StaffManager.exe.embed.manifest.res
          x64\Debug\AddDlg.obj
          x64\Debug\CvvImage.obj
+         x64\Debug\DataStatisticsDlg.obj
          x64\Debug\detectObject.obj
          x64\Debug\Face.obj
+         x64\Debug\InfoManageDlg.obj
          x64\Debug\InitUtils.obj
          x64\Debug\LoginDlg.obj
          x64\Debug\preprocessFace.obj
@@ -48,4 +49,4 @@
 
 生成成功。
 
-已用时间 00:00:03.46
+已用时间 00:00:05.31

@@ -6,7 +6,6 @@
 #include "StaffManager.h"
 #include "StaffManagerDlg.h"
 #include "afxdialogex.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -51,9 +50,38 @@ END_MESSAGE_MAP()
 CStaffManagerDlg::CStaffManagerDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CStaffManagerDlg::IDD, pParent)
 {
+	m_AddDlg = NULL;
+	m_RegisterDlg = NULL;
+	m_RecognizeDlg = NULL;
+	m_InfoDlg = NULL;
+	m_DataDlg = NULL;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_nSel = 0;
 }
 
+CStaffManagerDlg::~CStaffManagerDlg()
+{
+	if (NULL != m_AddDlg)
+	{
+		delete m_AddDlg;
+	}
+	if (NULL != m_RegisterDlg)
+	{
+		delete m_RegisterDlg;
+	}
+	if (NULL != m_RecognizeDlg)
+	{
+		delete m_RecognizeDlg;
+	}
+	if (NULL != m_InfoDlg)
+	{
+		delete m_InfoDlg;
+	}
+	if (NULL != m_DataDlg)
+	{
+		delete m_DataDlg;
+	}
+}
 void CStaffManagerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -63,9 +91,10 @@ BEGIN_MESSAGE_MAP(CStaffManagerDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(ID_ADD, &CStaffManagerDlg::OnBnClickedAdd)
 	ON_BN_CLICKED(IDC_INPUT_FACE_BUTTON, &CStaffManagerDlg::OnBnClickedInputFaceButton)
-	ON_BN_CLICKED(IDC_BUTTON1, &CStaffManagerDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_RECOGNIZE_BUTTON, &CStaffManagerDlg::OnBnClickedRecognizeButton)
+	ON_BN_CLICKED(IDC_DATA_BUTTON, &CStaffManagerDlg::OnBnClickedDataButton)
+	ON_BN_CLICKED(ID_INFO_BUTTON, &CStaffManagerDlg::OnBnClickedInfoButton)
 END_MESSAGE_MAP()
 
 
@@ -74,33 +103,47 @@ END_MESSAGE_MAP()
 BOOL CStaffManagerDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	// 将“关于...”菜单项添加到系统菜单中。
-
-	// IDM_ABOUTBOX 必须在系统命令范围内。
-	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
-	ASSERT(IDM_ABOUTBOX < 0xF000);
-
-	CMenu* pSysMenu = GetSystemMenu(FALSE);
-	if (pSysMenu != NULL)
+	//SetDlgItemText(IDC_USER_NAME_STATIC,ManagerName);
+	/*if (NULL == m_AddDlg)
 	{
-		BOOL bNameValid;
-		CString strAboutMenu;
-		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
-		ASSERT(bNameValid);
-		if (!strAboutMenu.IsEmpty())
-		{
-			pSysMenu->AppendMenu(MF_SEPARATOR);
-			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
-		}
+	m_AddDlg = new CAddDlg();
+	m_AddDlg->Create(IDD_ADD_DIALOG,this);
+	}*/
+	if (NULL == m_InfoDlg)
+	{
+		m_InfoDlg = new CInfoManageDlg();
+		m_InfoDlg->Create(IDD_INFO_DIALOG,this);
 	}
+	if (NULL == m_RegisterDlg)
+	{
+		m_RegisterDlg = new CRegisterFaceDlg();
+		m_RegisterDlg->Create(IDD_INPUT_FACE_DIALOG,this);
+	}
+	if (NULL == m_RecognizeDlg)
+	{
+		m_RecognizeDlg = new CRecognitionDlg();
+		m_RecognizeDlg->Create(IDD_RECOGNITION_DIALOG,this);
+	}
+	if (NULL == m_DataDlg)
+	{
+		m_DataDlg = new CDataStatisticsDlg();
+		m_DataDlg->Create(IDD_DATAMANAGEDIALOG,this);
+	}
+	
+	GetClientRect(rect);
+	GetDlgItem(ID_INFO_BUTTON)->GetWindowRect(rt);
+	this->ScreenToClient(rt);
 
-	// 设置此对话框的图标。当应用程序主窗口不是对话框时，框架将自动
-	//  执行此操作
-	SetIcon(m_hIcon, TRUE);			// 设置大图标
-	SetIcon(m_hIcon, FALSE);		// 设置小图标
-
-	// TODO: 在此添加额外的初始化代码
+	rect.top = rt.bottom + 10;
+	//m_AddDlg->MoveWindow(rect);
+	m_InfoDlg->MoveWindow(rect);
+	m_RegisterDlg->MoveWindow(rect);
+	m_RecognizeDlg->MoveWindow(rect);
+	m_DataDlg->MoveWindow(rect);
+	m_InfoDlg->ShowWindow(SW_SHOW);
+	
+	SetIcon(m_hIcon,TRUE);
+	SetIcon(m_hIcon,FALSE);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -142,7 +185,7 @@ void CStaffManagerDlg::OnPaint()
 		dc.DrawIcon(x, y, m_hIcon);
 	}
 	else
-	{
+	{	
 		CDialogEx::OnPaint();
 	}
 }
@@ -155,23 +198,46 @@ HCURSOR CStaffManagerDlg::OnQueryDragIcon()
 }
 
 
-
-void CStaffManagerDlg::OnBnClickedAdd()
+void CStaffManagerDlg::OnBnClickedInfoButton()
 {
-	CAddDlg dlg;
-	dlg.DoModal();
+	m_nSel = 0;
+	SelectPage();
 }
 
 
 void CStaffManagerDlg::OnBnClickedInputFaceButton()
 {
-	CRegisterFaceDlg dlg;
-	dlg.DoModal();
+	m_nSel = 1;
+	m_RegisterDlg->m_list->DeleteAllItems();
+	m_RegisterDlg->readStaff(m_RegisterDlg->m_list);
+	SelectPage();
+}
+
+void CStaffManagerDlg::OnBnClickedRecognizeButton()
+{
+	m_nSel = 2;
+	m_RecognizeDlg->model = Ptr<FaceRecognizer>();
+	m_RecognizeDlg->GetFacesModel(m_RecognizeDlg->model);
+
+	SelectPage();
 }
 
 
-void CStaffManagerDlg::OnBnClickedButton1()
+void CStaffManagerDlg::OnBnClickedDataButton()
 {
-	CRecognitionDlg dlg;
-	dlg.DoModal();
+	m_nSel = 3;
+	SelectPage();
+}
+
+
+void CStaffManagerDlg::SelectPage()
+{
+	ps[0] = m_InfoDlg;
+	ps[1] = m_RegisterDlg;
+	ps[2] = m_RecognizeDlg;
+	ps[3] = m_DataDlg;
+	int i = 0;
+	while(i < sizeof(ps)/sizeof(ps[0])){
+		ps[i++]->ShowWindow(i == m_nSel ? SW_SHOW:SW_HIDE);
+	}
 }

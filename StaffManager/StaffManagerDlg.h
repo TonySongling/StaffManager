@@ -6,13 +6,24 @@
 #include "AddDlg.h"
 #include "RegisterFaceDlg.h"
 #include "RecognitionDlg.h"
+#include "InfoManageDlg.h"
+#include "DataStatisticsDlg.h"
 // CStaffManagerDlg 对话框
 class CStaffManagerDlg : public CDialogEx
 {
+private:
+	CAddDlg* m_AddDlg;
+	CRegisterFaceDlg* m_RegisterDlg;
+	CRecognitionDlg* m_RecognizeDlg;
+	CInfoManageDlg* m_InfoDlg;
+	CDataStatisticsDlg* m_DataDlg;
+	int m_nSel;
+	CRect rect,rt;
+	CWnd* ps[4];
 // 构造
 public:
 	CStaffManagerDlg(CWnd* pParent = NULL);	// 标准构造函数
-
+	~CStaffManagerDlg();
 // 对话框数据
 	enum { IDD = IDD_STAFFMANAGER_DIALOG };
 
@@ -31,7 +42,9 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedAdd();
 	afx_msg void OnBnClickedInputFaceButton();
-	afx_msg void OnBnClickedButton1();
+	void SelectPage();
+	afx_msg void OnBnClickedRecognizeButton();
+	afx_msg void OnBnClickedDataButton();
+	afx_msg void OnBnClickedInfoButton();
 };
