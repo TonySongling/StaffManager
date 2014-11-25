@@ -33,4 +33,5 @@ public:
 	CString GetStaffNoByFaceId(int face_id);
 	Staff GetStaffByStaffNo(CString staff_no);
 	void SaveFeatureFlag(CString staff_no);
+	void SaveLogInfo(CString staff_no,CString staff_name,CString recognizeResult);
 };

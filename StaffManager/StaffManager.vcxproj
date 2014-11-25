@@ -194,6 +194,7 @@
     <ClInclude Include="Face.h" />
     <ClInclude Include="InfoManageDlg.h" />
     <ClInclude Include="InitUtils.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="LoginDlg.h" />
     <ClInclude Include="preprocessFace.h" />
     <ClInclude Include="recognition.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Face.cpp" />
     <ClCompile Include="InfoManageDlg.cpp" />
     <ClCompile Include="InitUtils.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="LoginDlg.cpp" />
     <ClCompile Include="preprocessFace.cpp" />
     <ClCompile Include="recognition.cpp" />

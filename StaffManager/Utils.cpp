@@ -356,3 +356,40 @@ void Utils::SaveFeatureFlag(CString staff_no)
 		return;
 	}
 }
+
+
+void Utils::SaveLogInfo(CString staff_no,CString staff_name,CString recognizeResult)
+{
+	//获取当前时间
+	CString strTime;
+	CTime m_time;
+	m_time = CTime::GetCurrentTime();
+	strTime = m_time.Format("%Y/%m/%d-%H:%M");
+
+	MYSQL mysql;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+
+	mysql_init(&mysql);
+	
+	MYSQL_RES *result = NULL;
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		mysql_set_character_set(&mysql, "gbk");
+		string sql = "insert into t_log (staff_no, staff_name, result, time) values(";
+		sql.append(1,'\'').append(staff_no).append(1,'\'').append(",").append(1,'\'').append(staff_name).append(1,'\'')
+			.append(",").append(1,'\'').append(recognizeResult).append(1,'\'').append(",").append(1,'\'').append(strTime).append(1,'\'').append(")");
+		if (0 == mysql_query(&mysql,sql.c_str()))
+		{
+			mysql_close(&mysql);
+		}	
+	}
+	else{
+		AfxMessageBox("系统出错");
+		return;
+	}
+}

@@ -94,6 +94,8 @@ void CRecognitionDlg::OnBnClickedRecognition()
 		preprocessFace p_preocess;
 		Utils utils;
 
+		CString recognizeResult;
+
 		while (true)
 		{
 			videoCapture >> cameraFrame;
@@ -140,11 +142,14 @@ void CRecognitionDlg::OnBnClickedRecognition()
 					SetDlgItemText(IDC_SEX_EDIT,staff.getSex());
 					SetDlgItemText(IDC_DUTY_EDIT,staff.getDuty());
 					SetDlgItemText(IDC_TEL_EDIT,staff.getTel());
-					AfxMessageBox("验证通过",MB_OK);
+					recognizeResult = "验证通过";
+					utils.SaveLogInfo(staff.getNo(),staff.getName(),recognizeResult);
+					AfxMessageBox(recognizeResult,MB_OK);
 					return;
 				}
 				else {
-					AfxMessageBox("信息不存在");
+					recognizeResult = "信息不存在";
+					AfxMessageBox(recognizeResult);
 					return;
 				}
 			}

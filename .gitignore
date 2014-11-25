@@ -1,2 +1,4 @@
-/x64/*
-/Debug/
+/x64/Debug/*
+!/x64/Debug/libmysql.dll
+/StaffManager/Debug/*
+/StaffManager/x64/Debug/*

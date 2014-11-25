@@ -217,16 +217,19 @@ void CStaffManagerDlg::OnBnClickedRecognizeButton()
 	m_RecognizeDlg->SetDlgItemText(IDC_SEX_EDIT,"");
 	m_RecognizeDlg->SetDlgItemText(IDC_DUTY_EDIT,"");
 	m_RecognizeDlg->SetDlgItemText(IDC_TEL_EDIT,"");
+	
 	m_RecognizeDlg->model = Ptr<FaceRecognizer>();
 	m_RecognizeDlg->GetFacesModel(m_RecognizeDlg->model);
-
 	SelectPage();
+	
 }
 
 
 void CStaffManagerDlg::OnBnClickedDataButton()
 {
 	m_nSel = 3;
+	m_DataDlg->m_list->DeleteAllItems();
+	m_DataDlg->ReadAllLogs(m_DataDlg->m_list);
 	SelectPage();
 }
 
