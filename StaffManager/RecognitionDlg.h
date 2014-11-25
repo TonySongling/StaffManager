@@ -72,4 +72,5 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	void GetFacesModel(Ptr<FaceRecognizer> &FacesModel);
+	bool isEnableRecognize;
 };

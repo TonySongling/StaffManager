@@ -145,6 +145,8 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 			}
 			CString facePath = path + "\\" + "\\" + staff_no;
 			utils.SaveFacePath(staff_no,facePath);
+			utils.SaveFeatureFlag(staff_no);
+			m_list->SetItemText(nSel,5,"是");
 			SetCurrentDirectory("\.\.\\\.\.");
 			AfxMessageBox("提取特征完成");
 			return;
@@ -191,7 +193,7 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 	int port = sqlutils->getPort();
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
-		string sql = "select staff_no, staff_name, staff_sex, staff_duty, staff_tel from t_staff";
+		string sql = "select staff_no, staff_name, staff_sex, staff_duty, staff_tel, feature_flag from t_staff";
 		mysql_query(&mysql,sql.c_str());
 		result = mysql_store_result(&mysql);
 		int fieldcount = mysql_num_fields(result);
@@ -218,6 +220,9 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 					case 4:
 						staff.setTel(row[i]);
 						break;
+					case 5:
+						staff.setFeatureFlag(atoi(row[i]));
+						break;
 				}
 			}
 			pList->InsertItem(j,staff.getNo());
@@ -225,6 +230,13 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 			pList->SetItemText(j,2,staff.getSex());
 			pList->SetItemText(j,3,staff.getDuty());
 			pList->SetItemText(j,4,staff.getTel());
+			if (1 == staff.getFeatureFlag())
+			{
+				pList->SetItemText(j,5,"是");
+			}else{
+				pList->SetItemText(j,5,"否");
+			}
+			
 			++j;
 			row = mysql_fetch_row(result);
 		}
@@ -239,9 +251,10 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 void CRegisterFaceDlg::SetListItemName()
 {
 	m_list = (CListCtrl*)GetDlgItem(IDC_INFO_LIST);
-	m_list->InsertColumn(0,"工号",0,80);
-	m_list->InsertColumn(1,"姓名",0,80);
-	m_list->InsertColumn(2,"性别",0,80);
+	m_list->InsertColumn(0,"工号",0,60);
+	m_list->InsertColumn(1,"姓名",0,60);
+	m_list->InsertColumn(2,"性别",0,40);
 	m_list->InsertColumn(3,"职称",0,80);
-	m_list->InsertColumn(4,"电话",0,120);
+	m_list->InsertColumn(4,"电话",0,100);
+	m_list->InsertColumn(5,"是否已登记",0,80);
 }

@@ -50,7 +50,6 @@ END_MESSAGE_MAP()
 CStaffManagerDlg::CStaffManagerDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CStaffManagerDlg::IDD, pParent)
 {
-	m_AddDlg = NULL;
 	m_RegisterDlg = NULL;
 	m_RecognizeDlg = NULL;
 	m_InfoDlg = NULL;
@@ -61,10 +60,6 @@ CStaffManagerDlg::CStaffManagerDlg(CWnd* pParent /*=NULL*/)
 
 CStaffManagerDlg::~CStaffManagerDlg()
 {
-	if (NULL != m_AddDlg)
-	{
-		delete m_AddDlg;
-	}
 	if (NULL != m_RegisterDlg)
 	{
 		delete m_RegisterDlg;
@@ -103,12 +98,7 @@ END_MESSAGE_MAP()
 BOOL CStaffManagerDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	//SetDlgItemText(IDC_USER_NAME_STATIC,ManagerName);
-	/*if (NULL == m_AddDlg)
-	{
-	m_AddDlg = new CAddDlg();
-	m_AddDlg->Create(IDD_ADD_DIALOG,this);
-	}*/
+
 	if (NULL == m_InfoDlg)
 	{
 		m_InfoDlg = new CInfoManageDlg();
@@ -140,6 +130,12 @@ BOOL CStaffManagerDlg::OnInitDialog()
 	m_RegisterDlg->MoveWindow(rect);
 	m_RecognizeDlg->MoveWindow(rect);
 	m_DataDlg->MoveWindow(rect);
+
+	ps[0] = m_InfoDlg;
+	ps[1] = m_RegisterDlg;
+	ps[2] = m_RecognizeDlg;
+	ps[3] = m_DataDlg;
+
 	m_InfoDlg->ShowWindow(SW_SHOW);
 	
 	SetIcon(m_hIcon,TRUE);
@@ -216,6 +212,11 @@ void CStaffManagerDlg::OnBnClickedInputFaceButton()
 void CStaffManagerDlg::OnBnClickedRecognizeButton()
 {
 	m_nSel = 2;
+	m_RecognizeDlg->SetDlgItemText(IDC_NAME_EDIT,"");
+	m_RecognizeDlg->SetDlgItemText(IDC_NO_EDIT,"");
+	m_RecognizeDlg->SetDlgItemText(IDC_SEX_EDIT,"");
+	m_RecognizeDlg->SetDlgItemText(IDC_DUTY_EDIT,"");
+	m_RecognizeDlg->SetDlgItemText(IDC_TEL_EDIT,"");
 	m_RecognizeDlg->model = Ptr<FaceRecognizer>();
 	m_RecognizeDlg->GetFacesModel(m_RecognizeDlg->model);
 
@@ -232,10 +233,6 @@ void CStaffManagerDlg::OnBnClickedDataButton()
 
 void CStaffManagerDlg::SelectPage()
 {
-	ps[0] = m_InfoDlg;
-	ps[1] = m_RegisterDlg;
-	ps[2] = m_RecognizeDlg;
-	ps[3] = m_DataDlg;
 	int i = 0;
 	while(i < sizeof(ps)/sizeof(ps[0])){
 		ps[i++]->ShowWindow(i == m_nSel ? SW_SHOW:SW_HIDE);

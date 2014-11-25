@@ -122,7 +122,8 @@ void Utils::DeletePath(CString sPath)
 			}    
 		}    
 	}    
-	tempFind.Close();    
+	tempFind.Close();
+	RemoveDirectory(sPath);
 }
 
 
@@ -322,4 +323,36 @@ Staff Utils::GetStaffByStaffNo(CString staff_no)
 		AfxMessageBox("系统出错");
 	}
 	return Staff();
+}
+
+
+void Utils::SaveFeatureFlag(CString staff_no)
+{
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+
+	mysql_init(&mysql);
+
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		string str = "update t_staff set feature_flag=";
+		string sql = "";
+		int feature_flag = 1;
+		ostringstream oss;
+		oss << str << feature_flag;
+		sql += oss.str();
+		sql.append(" where staff_no = ").append(1,'\'').append(staff_no).append(1,'\'');
+		mysql_query(&mysql,sql.c_str());
+		mysql_close(&mysql);
+	}
+	else{
+		AfxMessageBox("系统出错");
+		return;
+	}
 }

@@ -52,6 +52,11 @@ CString Staff::getTel(void)
 	return this->tel;
 }
 
+int Staff::getFeatureFlag(void)
+{
+	return this->feature_flag;
+}
+
 
 void Staff::setStaffId(int staff_id)
 {
@@ -83,5 +88,10 @@ void Staff::setDuty(CString duty)
 void Staff::setTel(CString tel)
 {
 	this->tel = tel;
+}
+
+void Staff::setFeatureFlag(int feature_flag)
+{
+	this->feature_flag = feature_flag;
 }
 

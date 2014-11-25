@@ -12,7 +12,6 @@
 class CStaffManagerDlg : public CDialogEx
 {
 private:
-	CAddDlg* m_AddDlg;
 	CRegisterFaceDlg* m_RegisterDlg;
 	CRecognitionDlg* m_RecognizeDlg;
 	CInfoManageDlg* m_InfoDlg;

@@ -32,4 +32,5 @@ public:
 	Ptr<FaceRecognizer> GetTrainModel(vector<Mat> &preprocessedFaces, vector<int> &facelabels);
 	CString GetStaffNoByFaceId(int face_id);
 	Staff GetStaffByStaffNo(CString staff_no);
+	void SaveFeatureFlag(CString staff_no);
 };
