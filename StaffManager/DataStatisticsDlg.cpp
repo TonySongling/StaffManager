@@ -30,6 +30,7 @@ void CDataStatisticsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDataStatisticsDlg, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &CDataStatisticsDlg::OnBnClickedCancel)
 	ON_BN_CLICKED(IDOK, &CDataStatisticsDlg::OnBnClickedOk)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -54,11 +55,21 @@ BOOL CDataStatisticsDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	//设置窗口背景
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BG_BITMAP);
+	m_dc.CreateCompatibleDC(NULL);
+	m_dc.SelectObject(&bmp);
+	BITMAP bm;
+	bmp.GetBitmap(&bm);
+	m_size.cx = bm.bmWidth;
+	m_size.cy = bm.bmHeight;
+
 	m_list = (CListCtrl*)GetDlgItem(IDC_LOG_LIST);
 	m_list->InsertColumn(0,"工号",0,100);
 	m_list->InsertColumn(1,"姓名",0,80);
-	m_list->InsertColumn(2,"操作状态",0,130);
-	m_list->InsertColumn(3,"发生时间",0,195);
+	m_list->InsertColumn(2,"操作状态",0,125);
+	m_list->InsertColumn(3,"发生时间",0,175);
 
 	ReadAllLogs(m_list);
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -83,7 +94,7 @@ void CDataStatisticsDlg::ReadAllLogs(CListCtrl* pList)
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
 		mysql_set_character_set(&mysql, "gbk");
-		string sql = "select staff_no, staff_name, result, time from t_log";
+		string sql = "select staff_no, staff_name, result, time from t_log order by time desc";
 		mysql_query(&mysql,sql.c_str());
 		result = mysql_store_result(&mysql);
 		int fieldcount = mysql_num_fields(result);
@@ -122,4 +133,12 @@ void CDataStatisticsDlg::ReadAllLogs(CListCtrl* pList)
 	else{
 		MessageBox("系统出错");
 	}
+}
+
+
+void CDataStatisticsDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+	dc.BitBlt(0,0,m_size.cx,m_size.cy,&m_dc,0,0,SRCCOPY);
+	// 不为绘图消息调用 CDialogEx::OnPaint()
 }

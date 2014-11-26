@@ -36,6 +36,7 @@ CRecognitionDlg::CRecognitionDlg(CWnd* pParent /*=NULL*/)
 
 CRecognitionDlg::~CRecognitionDlg()
 {
+
 }
 
 void CRecognitionDlg::DoDataExchange(CDataExchange* pDX)
@@ -46,7 +47,6 @@ void CRecognitionDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CRecognitionDlg, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &CRecognitionDlg::OnBnClickedCancel)
-	ON_BN_CLICKED(ID_RECOGNITION, &CRecognitionDlg::OnBnClickedRecognition)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
@@ -61,107 +61,6 @@ void CRecognitionDlg::OnBnClickedCancel()
 }
 
 
-void CRecognitionDlg::OnBnClickedRecognition()
-{
-	if (isEnableRecognize == true)
-	{
-		VideoCapture videoCapture;
-
-		InitUtils initUtils;
-		int cameraNumber = 0;
-		//初始化摄像头
-		if(!initUtils.initWebcam(videoCapture,cameraNumber))
-			return;
-
-		videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, DESIRED_CAMERA_WIDTH);
-		videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, DESIRED_CAMERA_HEIGHT);
-
-		Mat old_prepreprocessedFace;
-		Mat cameraFrame;
-		Mat displayedFrame;
-		Mat preprocessedFace;
-		//Mat reconstructedFace;
-		// Find a face and preprocess it to have a standard size and contrast & brightness.
-		Rect faceRect;  // Position of detected face.
-		Rect searchedLeftEye, searchedRightEye; // top-left and top-right regions of the face, where eyes were searched.
-		Point leftEye, rightEye;    // Position of the detected eyes.
-		double old_time = 0;
-		double similarity;
-		int face_id = -1;
-		//开始检测时间
-		double start_detect = (double)getTickCount();
-
-		preprocessFace p_preocess;
-		Utils utils;
-
-		CString recognizeResult;
-
-		while (true)
-		{
-			videoCapture >> cameraFrame;
-			if( cameraFrame.empty() ) {
-				AfxMessageBox("获取图像失败");
-				return;
-			}
-			cameraFrame.copyTo(displayedFrame);
-
-			preprocessedFace = p_preocess.getPreprocessedFace(displayedFrame, faceWidth, faceCascade, eyeCascade1, eyeCascade2, true, &faceRect, &leftEye, &rightEye, &searchedLeftEye, &searchedRightEye);
-
-			// 画出检测到的脸和眼睛
-			if (faceRect.width > 0) {
-				rectangle(displayedFrame, faceRect, CV_RGB(255, 255, 0), 2, CV_AA);
-
-				Scalar eyeColor = CV_RGB(0,255,255);
-				if (leftEye.x >= 0) {
-					circle(displayedFrame, Point(faceRect.x + leftEye.x, faceRect.y + leftEye.y), 6, eyeColor, 1, CV_AA);
-				}
-				if (rightEye.x >= 0) {
-					circle(displayedFrame, Point(faceRect.x + rightEye.x, faceRect.y + rightEye.y), 6, eyeColor, 1, CV_AA);
-				}
-			}
-
-			img = &IplImage(displayedFrame);
-			cimg.CopyOf(img,3);
-			cimg.DrawToHDC(hDc,&rect);
-			double start_recognize = (double)getTickCount();
-			if ((start_recognize - start_detect) / getTickFrequency() > 2.0)
-			{
-				// Generate a face approximation by back-projecting the eigenvectors & eigenvalues.
-				recognition recog;
-				Mat reconstructedFace = recog.reconstructFace(model, preprocessedFace);
-
-				similarity = recog.getSimilarity(preprocessedFace, reconstructedFace);
-
-				if (similarity < UNKNOWN_PERSON_THRESHOLD) {
-					// Identify who the person is in the preprocessed face image.
-					face_id = model->predict(preprocessedFace);
-					CString staff_no = utils.GetStaffNoByFaceId(face_id);
-					Staff staff = utils.GetStaffByStaffNo(staff_no);
-					SetDlgItemText(IDC_NAME_EDIT,staff.getName());
-					SetDlgItemText(IDC_NO_EDIT,staff.getNo());
-					SetDlgItemText(IDC_SEX_EDIT,staff.getSex());
-					SetDlgItemText(IDC_DUTY_EDIT,staff.getDuty());
-					SetDlgItemText(IDC_TEL_EDIT,staff.getTel());
-					recognizeResult = "验证通过";
-					utils.SaveLogInfo(staff.getNo(),staff.getName(),recognizeResult);
-					AfxMessageBox(recognizeResult,MB_OK);
-					return;
-				}
-				else {
-					recognizeResult = "信息不存在";
-					AfxMessageBox(recognizeResult);
-					return;
-				}
-			}
-			if( waitKey(30)>=0 ) 
-				break;
-		}
-	}else{
-		AfxMessageBox("无特征信息，请登记后再进行验证");
-	}
-}
-
-
 BOOL CRecognitionDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -170,7 +69,6 @@ BOOL CRecognitionDlg::OnInitDialog()
 	hDc = pDc->GetSafeHdc();
 	GetDlgItem(IDC_IMAGE_STATIC)->GetClientRect(&rect);
 
-	InitUtils initUtils;
 	initUtils.initDetectors(faceCascade,eyeCascade1,eyeCascade2,faceCascadeFilename,eyeCascadeFilename1,eyeCascadeFilename2);
 
 	//设置窗口背景
@@ -245,5 +143,95 @@ void CRecognitionDlg::GetFacesModel(Ptr<FaceRecognizer> &FacesModel)
 		}
 	}else{
 		AfxMessageBox("没有登记特征，请登记后再进行验证");
+	}
+}
+
+
+void CRecognitionDlg::Recognize()
+{
+	if (isEnableRecognize == true)
+	{
+		Mat old_prepreprocessedFace;
+		Mat cameraFrame;
+		Mat displayedFrame;
+		Mat preprocessedFace;
+		//Mat reconstructedFace;
+		// Find a face and preprocess it to have a standard size and contrast & brightness.
+		Rect faceRect;  // Position of detected face.
+		Rect searchedLeftEye, searchedRightEye; // top-left and top-right regions of the face, where eyes were searched.
+		Point leftEye, rightEye;    // Position of the detected eyes.
+		double old_time = 0;
+		double similarity;
+		int face_id = -1;
+		//开始检测时间
+		double start_detect = (double)getTickCount();
+
+		preprocessFace p_preocess;
+		Utils utils;
+
+		CString recognizeResult;
+
+		while (true)
+		{
+			videoCapture >> cameraFrame;
+			if( cameraFrame.empty() ) {
+				AfxMessageBox("获取图像失败");
+				return;
+			}
+			cameraFrame.copyTo(displayedFrame);
+
+			preprocessedFace = p_preocess.getPreprocessedFace(displayedFrame, faceWidth, faceCascade, eyeCascade1, eyeCascade2, true, &faceRect, &leftEye, &rightEye, &searchedLeftEye, &searchedRightEye);
+
+			// 画出检测到的脸和眼睛
+			if (faceRect.width > 0) {
+				rectangle(displayedFrame, faceRect, CV_RGB(255, 255, 0), 2, CV_AA);
+
+				Scalar eyeColor = CV_RGB(0,255,255);
+				if (leftEye.x >= 0) {
+					circle(displayedFrame, Point(faceRect.x + leftEye.x, faceRect.y + leftEye.y), 6, eyeColor, 1, CV_AA);
+				}
+				if (rightEye.x >= 0) {
+					circle(displayedFrame, Point(faceRect.x + rightEye.x, faceRect.y + rightEye.y), 6, eyeColor, 1, CV_AA);
+				}
+			}
+
+			img = &IplImage(displayedFrame);
+			cimg.CopyOf(img,3);
+			cimg.DrawToHDC(hDc,&rect);
+			double start_recognize = (double)getTickCount();
+			if ((start_recognize - start_detect) / getTickFrequency() > 2.0)
+			{
+				// Generate a face approximation by back-projecting the eigenvectors & eigenvalues.
+				recognition recog;
+				Mat reconstructedFace = recog.reconstructFace(model, preprocessedFace);
+
+				similarity = recog.getSimilarity(preprocessedFace, reconstructedFace);
+
+				if (similarity < UNKNOWN_PERSON_THRESHOLD) {
+					// Identify who the person is in the preprocessed face image.
+					face_id = model->predict(preprocessedFace);
+					CString staff_no = utils.GetStaffNoByFaceId(face_id);
+					Staff staff = utils.GetStaffByStaffNo(staff_no);
+					SetDlgItemText(IDC_NAME_EDIT,staff.getName());
+					SetDlgItemText(IDC_NO_EDIT,staff.getNo());
+					SetDlgItemText(IDC_SEX_EDIT,staff.getSex());
+					recognizeResult = "验证通过";
+					utils.SaveLogInfo(staff.getNo(),staff.getName(),recognizeResult);
+					SetDlgItemText(IDC_RESULT_STATIC,"验证结果：" + recognizeResult);
+					//AfxMessageBox(recognizeResult,MB_OK);
+					return;
+				}else {
+					recognizeResult = "验证未通过";
+					utils.SaveLogInfo("未知","未知",recognizeResult);
+					SetDlgItemText(IDC_RESULT_STATIC,"验证结果：" + recognizeResult);
+					//AfxMessageBox(recognizeResult);
+					return;
+				}
+			}
+			if( waitKey(30)>=0 ) 
+				break;
+		}
+	}else{
+		AfxMessageBox("无特征信息，请登记后再进行验证");
 	}
 }

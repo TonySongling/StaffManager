@@ -10,6 +10,8 @@ class CInfoManageDlg : public CDialogEx
 
 public:
 	CListCtrl* m_list;
+	CDC m_dc;
+	CSize m_size;
 	CInfoManageDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CInfoManageDlg();
 
@@ -30,4 +32,5 @@ public:
 	virtual BOOL OnInitDialog();
 	void SetListItemName();
 	void ReadStaff(CListCtrl* pList);
+	afx_msg void OnPaint();
 };

@@ -39,6 +39,7 @@ void CRegisterFaceDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CRegisterFaceDlg, CDialogEx)
 	ON_BN_CLICKED(ID_ADD_BUTTON, &CRegisterFaceDlg::OnBnClickedAddButton)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -164,6 +165,16 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 BOOL CRegisterFaceDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	//设置窗口背景
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BG_BITMAP);
+	m_dc.CreateCompatibleDC(NULL);
+	m_dc.SelectObject(&bmp);
+	BITMAP bm;
+	bmp.GetBitmap(&bm);
+	m_size.cx = bm.bmWidth;
+	m_size.cy = bm.bmHeight;
+
 	SetListItemName();
 
 	pDc = GetDlgItem(IDC_IMAGE)->GetDC();
@@ -257,4 +268,12 @@ void CRegisterFaceDlg::SetListItemName()
 	m_list->InsertColumn(3,"职称",0,80);
 	m_list->InsertColumn(4,"电话",0,100);
 	m_list->InsertColumn(5,"是否已登记",0,80);
+}
+
+
+void CRegisterFaceDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+	dc.BitBlt(0,0,m_size.cx,m_size.cy,&m_dc,0,0,SRCCOPY);
+	// 不为绘图消息调用 CDialogEx::OnPaint()
 }

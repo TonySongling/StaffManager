@@ -5,6 +5,7 @@
 #include <iostream>
 #include "mysql.h"
 #include "CvvImage.h"
+
 // Include OpenCV's C++ Interface
 #include "opencv2/opencv.hpp"
 
@@ -56,6 +57,10 @@ public:
 	CDC m_dc;
 	CSize m_size;
 
+	bool isEnableRecognize;
+	VideoCapture videoCapture;
+	InitUtils initUtils;
+
 	CRecognitionDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CRecognitionDlg();
 
@@ -68,9 +73,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedCancel();
-	afx_msg void OnBnClickedRecognition();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	void GetFacesModel(Ptr<FaceRecognizer> &FacesModel);
-	bool isEnableRecognize;
+	void Recognize();
+	
 };

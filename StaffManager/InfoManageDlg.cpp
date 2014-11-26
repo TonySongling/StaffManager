@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CInfoManageDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_ADD, &CInfoManageDlg::OnBnClickedAdd)
 	ON_BN_CLICKED(IDC_MODIFY, &CInfoManageDlg::OnBnClickedModify)
 	ON_BN_CLICKED(IDC_DELETE, &CInfoManageDlg::OnBnClickedDelete)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -154,6 +155,16 @@ void CInfoManageDlg::OnBnClickedDelete()
 BOOL CInfoManageDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	//设置窗口背景
+	CBitmap bmp;
+	bmp.LoadBitmap(IDB_BG_BITMAP);
+	m_dc.CreateCompatibleDC(NULL);
+	m_dc.SelectObject(&bmp);
+	BITMAP bm;
+	bmp.GetBitmap(&bm);
+	m_size.cx = bm.bmWidth;
+	m_size.cy = bm.bmHeight;
+
 	SetListItemName();
 	ReadStaff(m_list);
 
@@ -232,4 +243,12 @@ void CInfoManageDlg::ReadStaff(CListCtrl* pList)
 	else{
 		MessageBox("系统出错");
 	}
+}
+
+
+void CInfoManageDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+	dc.BitBlt(0,0,m_size.cx,m_size.cy,&m_dc,0,0,SRCCOPY);
+	// 不为绘图消息调用 CDialogEx::OnPaint()
 }

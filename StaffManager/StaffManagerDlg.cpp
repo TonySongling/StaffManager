@@ -49,6 +49,7 @@ END_MESSAGE_MAP()
 
 CStaffManagerDlg::CStaffManagerDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CStaffManagerDlg::IDD, pParent)
+	, StartRecognizeFlag(false)
 {
 	m_RegisterDlg = NULL;
 	m_RecognizeDlg = NULL;
@@ -56,6 +57,9 @@ CStaffManagerDlg::CStaffManagerDlg(CWnd* pParent /*=NULL*/)
 	m_DataDlg = NULL;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_nSel = 0;
+	StartRecognizeFlag = false;
+	DESIRED_CAMERA_WIDTH = 640;
+	DESIRED_CAMERA_HEIGHT = 480;
 }
 
 CStaffManagerDlg::~CStaffManagerDlg()
@@ -90,6 +94,7 @@ BEGIN_MESSAGE_MAP(CStaffManagerDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_RECOGNIZE_BUTTON, &CStaffManagerDlg::OnBnClickedRecognizeButton)
 	ON_BN_CLICKED(IDC_DATA_BUTTON, &CStaffManagerDlg::OnBnClickedDataButton)
 	ON_BN_CLICKED(ID_INFO_BUTTON, &CStaffManagerDlg::OnBnClickedInfoButton)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -196,6 +201,8 @@ HCURSOR CStaffManagerDlg::OnQueryDragIcon()
 
 void CStaffManagerDlg::OnBnClickedInfoButton()
 {
+	CleanTimerVideo();
+
 	m_nSel = 0;
 	SelectPage();
 }
@@ -203,6 +210,8 @@ void CStaffManagerDlg::OnBnClickedInfoButton()
 
 void CStaffManagerDlg::OnBnClickedInputFaceButton()
 {
+	CleanTimerVideo();
+
 	m_nSel = 1;
 	m_RegisterDlg->m_list->DeleteAllItems();
 	m_RegisterDlg->readStaff(m_RegisterDlg->m_list);
@@ -222,11 +231,28 @@ void CStaffManagerDlg::OnBnClickedRecognizeButton()
 	m_RecognizeDlg->GetFacesModel(m_RecognizeDlg->model);
 	SelectPage();
 	
+	if (m_RecognizeDlg->isEnableRecognize)
+	{
+		int cameraNumber = 0;
+		//初始化摄像头
+		if(!m_RecognizeDlg->initUtils.initWebcam(m_RecognizeDlg->videoCapture,cameraNumber))
+			return;
+
+		m_RecognizeDlg->videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, DESIRED_CAMERA_WIDTH);
+		m_RecognizeDlg->videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, DESIRED_CAMERA_HEIGHT);
+
+		if (SetTimer(1,3000,NULL))
+		{
+			StartRecognizeFlag = true;
+		}
+	}
 }
 
 
 void CStaffManagerDlg::OnBnClickedDataButton()
 {
+	CleanTimerVideo();
+
 	m_nSel = 3;
 	m_DataDlg->m_list->DeleteAllItems();
 	m_DataDlg->ReadAllLogs(m_DataDlg->m_list);
@@ -240,4 +266,26 @@ void CStaffManagerDlg::SelectPage()
 	while(i < sizeof(ps)/sizeof(ps[0])){
 		ps[i++]->ShowWindow(i == m_nSel ? SW_SHOW:SW_HIDE);
 	}
+}
+
+
+void CStaffManagerDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	switch(nIDEvent){
+	case 1:
+		m_RecognizeDlg->SetDlgItemText(IDC_NAME_EDIT,"");	
+		m_RecognizeDlg->SetDlgItemText(IDC_NO_EDIT,"");
+		m_RecognizeDlg->SetDlgItemText(IDC_SEX_EDIT,"");
+		m_RecognizeDlg->Recognize();
+	}
+	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CStaffManagerDlg::CleanTimerVideo()
+{
+	if (StartRecognizeFlag)
+		KillTimer(1);
+	m_RecognizeDlg->videoCapture.release();
 }

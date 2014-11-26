@@ -19,6 +19,11 @@ private:
 	int m_nSel;
 	CRect rect,rt;
 	CWnd* ps[4];
+	bool StartRecognizeFlag;
+
+	int DESIRED_CAMERA_WIDTH;
+	int DESIRED_CAMERA_HEIGHT;
+
 // 构造
 public:
 	CStaffManagerDlg(CWnd* pParent = NULL);	// 标准构造函数
@@ -46,4 +51,6 @@ public:
 	afx_msg void OnBnClickedRecognizeButton();
 	afx_msg void OnBnClickedDataButton();
 	afx_msg void OnBnClickedInfoButton();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	void CleanTimerVideo();
 };

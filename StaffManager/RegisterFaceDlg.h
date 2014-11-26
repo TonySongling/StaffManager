@@ -45,6 +45,10 @@ public:
 
 	int DESIRED_CAMERA_WIDTH ;
 	int DESIRED_CAMERA_HEIGHT ;
+
+	CDC m_dc;
+	CSize m_size;
+
 	CRegisterFaceDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CRegisterFaceDlg();
 
@@ -60,4 +64,5 @@ public:
 	virtual BOOL OnInitDialog();
 	void readStaff(CListCtrl* pList);
 	void SetListItemName();
+	afx_msg void OnPaint();
 };

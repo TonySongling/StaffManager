@@ -9,6 +9,8 @@ class CDataStatisticsDlg : public CDialogEx
 
 public:
 	CListCtrl* m_list;
+	CDC m_dc;
+	CSize m_size;
 	CDataStatisticsDlg(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CDataStatisticsDlg();
 
@@ -24,4 +26,5 @@ public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 	void ReadAllLogs(CListCtrl* pList);
+	afx_msg void OnPaint();
 };
