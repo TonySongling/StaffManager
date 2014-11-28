@@ -1,61 +1,17 @@
-﻿生成启动时间为 2014/11/28 16:05:11。
-     1>项目“D:\项目\StaffManager\StaffManager\StaffManager.vcxproj”在节点 2 上(build 个目标)。
+﻿生成启动时间为 2014/11/28 22:28:38。
+     1>项目“D:\项目\人脸识别\StaffManager\StaffManager\StaffManager.vcxproj”在节点 2 上(build 个目标)。
      1>InitializeBuildStatus:
          正在创建“x64\Debug\StaffManager.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
        ClCompile:
-         D:\Program Files\VS2010\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"x64\Debug\StaffManager.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /errorReport:prompt stdafx.cpp
-         stdafx.cpp
-         D:\Program Files\VS2010\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"x64\Debug\StaffManager.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /errorReport:prompt AddDlg.cpp CvvImage.cpp DataStatisticsDlg.cpp detectObject.cpp Face.cpp InfoManageDlg.cpp InitUtils.cpp Log.cpp LoginDlg.cpp preprocessFace.cpp recognition.cpp RecognitionDlg.cpp RegisterFaceDlg.cpp SQLUtils.cpp Staff.cpp StaffManager.cpp StaffManagerDlg.cpp Utils.cpp
-         Utils.cpp
-     1>Utils.cpp(86): warning C4551: 缺少参数列表的函数调用
-     1>Utils.cpp(100): warning C4800: “BOOL”: 将值强制为布尔值“true”或“false”(性能警告)
-     1>Utils.cpp(103): warning C4800: “BOOL”: 将值强制为布尔值“true”或“false”(性能警告)
-     1>Utils.cpp(108): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\Program Files\VS2010\VC\include\string.h(105) : 参见“strcpy”的声明
-     1>Utils.cpp(113): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\Program Files\VS2010\VC\include\stdio.h(371) : 参见“sprintf”的声明
-     1>Utils.cpp(120): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\Program Files\VS2010\VC\include\stdio.h(371) : 参见“sprintf”的声明
+         所有输出均为最新。
+         D:\Program Files\VS2010\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _WINDOWS /D _DEBUG /D _MBCS /D _AFXDLL /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"x64\Debug\StaffManager.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc100.pdb" /Gd /TP /errorReport:prompt StaffManagerDlg.cpp
          StaffManagerDlg.cpp
-         StaffManager.cpp
-         Staff.cpp
-         SQLUtils.cpp
-         RegisterFaceDlg.cpp
-     1>RegisterFaceDlg.cpp(151): warning C4129: “.”: 不可识别的字符转义序列
-     1>RegisterFaceDlg.cpp(151): warning C4129: “.”: 不可识别的字符转义序列
-     1>RegisterFaceDlg.cpp(151): warning C4129: “.”: 不可识别的字符转义序列
-     1>RegisterFaceDlg.cpp(151): warning C4129: “.”: 不可识别的字符转义序列
-     1>RegisterFaceDlg.cpp(143): warning C4101: “ex”: 未引用的局部变量
-         RecognitionDlg.cpp
-     1>RecognitionDlg.cpp(132): warning C4129: “.”: 不可识别的字符转义序列
-     1>RecognitionDlg.cpp(132): warning C4129: “.”: 不可识别的字符转义序列
-     1>RecognitionDlg.cpp(132): warning C4129: “.”: 不可识别的字符转义序列
-     1>RecognitionDlg.cpp(132): warning C4129: “.”: 不可识别的字符转义序列
-         recognition.cpp
-     1>recognition.cpp(95): warning C4101: “e”: 未引用的局部变量
-         preprocessFace.cpp
-         LoginDlg.cpp
-         Log.cpp
-         InitUtils.cpp
-     1>InitUtils.cpp(20): warning C4101: “e”: 未引用的局部变量
-     1>InitUtils.cpp(29): warning C4101: “e”: 未引用的局部变量
-     1>InitUtils.cpp(38): warning C4101: “e”: 未引用的局部变量
-     1>InitUtils.cpp(51): warning C4101: “e”: 未引用的局部变量
-         InfoManageDlg.cpp
-         Face.cpp
-         detectObject.cpp
-         DataStatisticsDlg.cpp
-         CvvImage.cpp
-         AddDlg.cpp
-     1>AddDlg.cpp(204): warning C4244: “初始化”: 从“my_ulonglong”转换到“int”，可能丢失数据
-     1>AddDlg.cpp(233): warning C4244: “初始化”: 从“my_ulonglong”转换到“int”，可能丢失数据
-         Generating Code...
        ResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _DEBUG /D _AFXDLL /l"0x0804" /Ix64\Debug\ /nologo /fo"x64\Debug\StaffManager.res" StaffManager.rc 
+         所有输出均为最新。
        ManifestResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"x64\Debug\StaffManager.exe.embed.manifest.res" x64\Debug\StaffManager_manifest.rc 
+         所有输出均为最新。
        Link:
-         D:\Program Files\VS2010\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\项目\StaffManager\x64\Debug\StaffManager.exe" /INCREMENTAL /NOLOGO libmysql.lib opencv_calib3d248d.lib opencv_contrib248d.lib opencv_core248d.lib opencv_features2d248d.lib opencv_flann248d.lib opencv_gpu248d.lib opencv_highgui248d.lib opencv_imgproc248d.lib opencv_legacy248d.lib opencv_objdetect248d.lib opencv_ts248d.lib opencv_video248d.lib opencv_nonfree248d.lib opencv_ocl248d.lib opencv_photo248d.lib opencv_stitching248d.lib opencv_superres248d.lib opencv_videostab248d.lib libmysql.lib mysqlclient.lib /MANIFEST /ManifestFile:"x64\Debug\StaffManager.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\项目\StaffManager\x64\Debug\StaffManager.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\项目\StaffManager\x64\Debug\StaffManager.lib" /MACHINE:X64 x64\Debug\StaffManager.res
+         D:\Program Files\VS2010\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\项目\人脸识别\StaffManager\x64\Debug\StaffManager.exe" /INCREMENTAL /NOLOGO opencv_calib3d248d.lib opencv_contrib248d.lib opencv_core248d.lib opencv_features2d248d.lib opencv_flann248d.lib opencv_gpu248d.lib opencv_highgui248d.lib opencv_imgproc248d.lib opencv_legacy248d.lib opencv_ml248d.lib opencv_nonfree248d.lib opencv_objdetect248d.lib opencv_photo248d.lib opencv_stitching248d.lib opencv_ts248d.lib opencv_video248d.lib opencv_videostab248d.lib libmysql.lib /MANIFEST /ManifestFile:"x64\Debug\StaffManager.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\项目\人脸识别\StaffManager\x64\Debug\StaffManager.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\项目\人脸识别\StaffManager\x64\Debug\StaffManager.lib" /MACHINE:X64 x64\Debug\StaffManager.res
          x64\Debug\StaffManager.exe.embed.manifest.res
          x64\Debug\AddDlg.obj
          x64\Debug\CvvImage.obj
@@ -76,39 +32,18 @@
          x64\Debug\StaffManagerDlg.obj
          x64\Debug\stdafx.obj
          x64\Debug\Utils.obj
-     1>LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
-         StaffManager.vcxproj -> D:\项目\StaffManager\x64\Debug\StaffManager.exe
+         StaffManager.vcxproj -> D:\项目\人脸识别\StaffManager\x64\Debug\StaffManager.exe
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"x64\Debug\StaffManager.exe.embed.manifest" /manifest x64\Debug\StaffManager.exe.intermediate.manifest "D:\Program Files\VS2010\VC\Include\Manifest\dpiaware.manifest"
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"x64\Debug\StaffManager.exe.embed.manifest.res" x64\Debug\StaffManager_manifest.rc 
+         所有输出均为最新。
        LinkEmbedManifest:
-         D:\Program Files\VS2010\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\项目\StaffManager\x64\Debug\StaffManager.exe" /INCREMENTAL /NOLOGO libmysql.lib opencv_calib3d248d.lib opencv_contrib248d.lib opencv_core248d.lib opencv_features2d248d.lib opencv_flann248d.lib opencv_gpu248d.lib opencv_highgui248d.lib opencv_imgproc248d.lib opencv_legacy248d.lib opencv_objdetect248d.lib opencv_ts248d.lib opencv_video248d.lib opencv_nonfree248d.lib opencv_ocl248d.lib opencv_photo248d.lib opencv_stitching248d.lib opencv_superres248d.lib opencv_videostab248d.lib libmysql.lib mysqlclient.lib /MANIFEST /ManifestFile:"x64\Debug\StaffManager.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\项目\StaffManager\x64\Debug\StaffManager.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\项目\StaffManager\x64\Debug\StaffManager.lib" /MACHINE:X64 x64\Debug\StaffManager.res
-         x64\Debug\StaffManager.exe.embed.manifest.res
-         x64\Debug\AddDlg.obj
-         x64\Debug\CvvImage.obj
-         x64\Debug\DataStatisticsDlg.obj
-         x64\Debug\detectObject.obj
-         x64\Debug\Face.obj
-         x64\Debug\InfoManageDlg.obj
-         x64\Debug\InitUtils.obj
-         x64\Debug\Log.obj
-         x64\Debug\LoginDlg.obj
-         x64\Debug\preprocessFace.obj
-         x64\Debug\recognition.obj
-         x64\Debug\RecognitionDlg.obj
-         x64\Debug\RegisterFaceDlg.obj
-         x64\Debug\SQLUtils.obj
-         x64\Debug\Staff.obj
-         x64\Debug\StaffManager.obj
-         x64\Debug\StaffManagerDlg.obj
-         x64\Debug\stdafx.obj
-         x64\Debug\Utils.obj
-         StaffManager.vcxproj -> D:\项目\StaffManager\x64\Debug\StaffManager.exe
+         所有输出均为最新。
+         StaffManager.vcxproj -> D:\项目\人脸识别\StaffManager\x64\Debug\StaffManager.exe
        FinalizeBuildStatus:
          正在删除文件“x64\Debug\StaffManager.unsuccessfulbuild”。
          正在对“x64\Debug\StaffManager.lastbuildstate”执行 Touch 任务。
-     1>已完成生成项目“D:\项目\StaffManager\StaffManager\StaffManager.vcxproj”(build 个目标)的操作。
+     1>已完成生成项目“D:\项目\人脸识别\StaffManager\StaffManager\StaffManager.vcxproj”(build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:40.50
+已用时间 00:00:03.75

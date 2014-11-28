@@ -151,6 +151,9 @@ void CRecognitionDlg::Recognize()
 {
 	if (isEnableRecognize == true)
 	{
+		SetDlgItemText(IDC_NO_EDIT,"");
+		SetDlgItemText(IDC_NAME_EDIT,"");
+		SetDlgItemText(IDC_SEX_EDIT,"");
 		Mat old_prepreprocessedFace;
 		Mat cameraFrame;
 		Mat displayedFrame;
