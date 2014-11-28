@@ -142,6 +142,7 @@ void Utils::SaveFacePath(CString staff_no, CString face_path)
 	int port = sqlutils->getPort();
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
+		mysql_set_character_set(&mysql, "gbk");
 		string sql = "insert into t_face (staff_no, face_path) values(";
 		sql.append(1,'\'').append(staff_no).append(1,'\'').append(",").append(1,'\'').append(face_path).append(1,'\'').append(")");
 		mysql_query(&mysql,sql.c_str());
@@ -170,6 +171,7 @@ vector<Face> Utils::GetAllFaces()
 	int port = sqlutils->getPort();
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
+		mysql_set_character_set(&mysql, "gbk");
 		string sql = "select face_id, staff_no, face_path from t_face";
 		mysql_query(&mysql,sql.c_str());
 
@@ -240,6 +242,7 @@ CString Utils::GetStaffNoByFaceId(int face_id)
 	int port = sqlutils->getPort();
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
+		mysql_set_character_set(&mysql, "gbk");
 		string str = "select staff_no from t_face where face_id = ";
 		ostringstream m_sql;
 		m_sql << str <<face_id;
@@ -287,6 +290,7 @@ Staff Utils::GetStaffByStaffNo(CString staff_no)
 	int port = sqlutils->getPort();
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
+		mysql_set_character_set(&mysql, "gbk");
 		string sql = "select staff_name, staff_sex, staff_duty, staff_tel from t_staff where staff_no = ";
 		sql.append(1,'\'').append(staff_no).append(1,'\'');
 
@@ -341,6 +345,7 @@ void Utils::SaveFeatureFlag(CString staff_no)
 	int port = sqlutils->getPort();
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
+		mysql_set_character_set(&mysql, "gbk");
 		string str = "update t_staff set feature_flag=";
 		string sql = "";
 		int feature_flag = 1;

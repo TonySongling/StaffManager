@@ -115,6 +115,7 @@ void CInfoManageDlg::OnBnClickedDelete()
 	int port = sqlutils->getPort();
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
+		mysql_set_character_set(&mysql, "gbk");
 		string sql = "delete from t_staff where staff_no=";
 		sql.append(1,'\'').append(staff_no).append(1,'\'');
 		mysql_query(&mysql,sql.c_str());
@@ -200,6 +201,7 @@ void CInfoManageDlg::ReadStaff(CListCtrl* pList)
 	int port = sqlutils->getPort();
 	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 	{
+		mysql_set_character_set(&mysql, "gbk");
 		string sql = "select staff_no, staff_name, staff_sex, staff_duty, staff_tel from t_staff";
 		mysql_query(&mysql,sql.c_str());
 		result = mysql_store_result(&mysql);

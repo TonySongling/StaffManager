@@ -64,6 +64,7 @@ void CAddDlg::OnBnClickedAdd()
 		int port = sqlutils->getPort();
 		if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 		{
+			mysql_set_character_set(&mysql, "gbk");
 			string sql = "update t_staff set staff_name=";
 				sql.append(1,'\'').append(staff_name).append(1,'\'').append(",").append("staff_sex=").append(1,'\'').append(staff_sex).append(1,'\'').append(",")
 					.append("staff_duty=").append(1,'\'').append(staff_duty).append(1,'\'').append(",").append("staff_tel=").append(1,'\'').append(staff_tel).append(1,'\'')
@@ -110,6 +111,7 @@ void CAddDlg::OnBnClickedAdd()
 		int port = sqlutils->getPort();
 		if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
 		{
+			mysql_set_character_set(&mysql, "gbk");
 			if (!checkNo(mysql,sqlutils,no) && !checkTel(mysql,sqlutils,tel))
 			{
 				string sql = "insert into t_staff (staff_name,staff_no,staff_sex,staff_duty,staff_tel) values(";

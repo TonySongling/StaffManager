@@ -224,9 +224,8 @@ void CStaffManagerDlg::OnBnClickedRecognizeButton()
 	m_RecognizeDlg->SetDlgItemText(IDC_NAME_EDIT,"");
 	m_RecognizeDlg->SetDlgItemText(IDC_NO_EDIT,"");
 	m_RecognizeDlg->SetDlgItemText(IDC_SEX_EDIT,"");
-	m_RecognizeDlg->SetDlgItemText(IDC_DUTY_EDIT,"");
-	m_RecognizeDlg->SetDlgItemText(IDC_TEL_EDIT,"");
-	
+	m_RecognizeDlg->SetDlgItemText(IDC_RESULT_STATIC,"验证结果:");
+
 	m_RecognizeDlg->model = Ptr<FaceRecognizer>();
 	m_RecognizeDlg->GetFacesModel(m_RecognizeDlg->model);
 	SelectPage();
@@ -264,7 +263,8 @@ void CStaffManagerDlg::SelectPage()
 {
 	int i = 0;
 	while(i < sizeof(ps)/sizeof(ps[0])){
-		ps[i++]->ShowWindow(i == m_nSel ? SW_SHOW:SW_HIDE);
+		ps[i]->ShowWindow(i == m_nSel ? SW_SHOW:SW_HIDE);
+		i++;
 	}
 }
 
@@ -274,9 +274,6 @@ void CStaffManagerDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	switch(nIDEvent){
 	case 1:
-		m_RecognizeDlg->SetDlgItemText(IDC_NAME_EDIT,"");	
-		m_RecognizeDlg->SetDlgItemText(IDC_NO_EDIT,"");
-		m_RecognizeDlg->SetDlgItemText(IDC_SEX_EDIT,"");
 		m_RecognizeDlg->Recognize();
 	}
 	CDialogEx::OnTimer(nIDEvent);
