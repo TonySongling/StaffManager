@@ -102,53 +102,13 @@ void CInfoManageDlg::OnBnClickedDelete()
 
 	CString staff_no = m_list->GetItemText(nSel,0);
 
-	MYSQL mysql;
-	MYSQL_RES *result = NULL;
-	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
-
-	mysql_init(&mysql);
-
-	string serverName = sqlutils->getServerName();
-	string userName = sqlutils->getUserName();
-	string password = sqlutils->getPassword();
-	string databaseName = sqlutils->getDatabaseName();
-	int port = sqlutils->getPort();
-	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	if(IDYES == AfxMessageBox("确定要删除吗？",MB_YESNO,0))
 	{
-		mysql_set_character_set(&mysql, "gbk");
-		string sql = "delete from t_staff where staff_no=";
-		sql.append(1,'\'').append(staff_no).append(1,'\'');
-		mysql_query(&mysql,sql.c_str());
-		
-		//删除目录
-		string str = "select face_path from t_face where staff_no = ";
-		str.append(1,'\'').append(staff_no).append(1,'\'');
-		mysql_query(&mysql,str.c_str());
-		result = mysql_store_result(&mysql);
-		//  int fieldcount = mysql_num_fields(result);
-		MYSQL_ROW row = NULL;
-		row = mysql_fetch_row(result);
 		Utils utils;
-		if(row==NULL)
-		{
-			//AfxMessageBox("请先登记");  //如果为空什么也不做
-		}else{
-			utils.DeletePath(row[0]);
-		}
-		if(result!=NULL) 
-			mysql_free_result(result);//释放结果资源 
-
-		//删除数据表数据
-		string m_SQL = "delete from t_face where staff_no=";
-		m_SQL.append(1,'\'').append(staff_no).append(1,'\'');
-		mysql_query(&mysql,m_SQL.c_str());
-
-		mysql_close(&mysql);
+		utils.DeleteStaffByNo(staff_no);
 		m_list->DeleteItem(nSel);
+	}else{
 		return;
-	}
-	else{
-		MessageBox("系统出错");
 	}
 }
 
@@ -243,7 +203,7 @@ void CInfoManageDlg::ReadStaff(CListCtrl* pList)
 
 	}
 	else{
-		MessageBox("系统出错");
+		AfxMessageBox("系统出错");
 	}
 }
 

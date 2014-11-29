@@ -34,4 +34,9 @@ public:
 	Staff GetStaffByStaffNo(CString staff_no);
 	void SaveFeatureFlag(CString staff_no);
 	void SaveLogInfo(CString staff_no,CString staff_name,CString recognizeResult);
+	void DeleteStaffByNo(CString staff_no);
+	void AddStaff(CString name, CString no, CString sex, CString duty, CString tel, CListCtrl* list,int nCount);
+	bool CheckNo(MYSQL mysql,SQLUtils* sqlutils,CString staff_no);
+	bool CheckTel(MYSQL mysql,SQLUtils* sqlutils,CString staff_tel);
+	void ModifyStaff(CString staff_name, CString staff_sex, CString staff_duty, CString staff_tel, CListCtrl* list, CString no, int nSel);
 };

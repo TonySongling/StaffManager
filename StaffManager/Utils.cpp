@@ -398,3 +398,190 @@ void Utils::SaveLogInfo(CString staff_no,CString staff_name,CString recognizeRes
 		return;
 	}
 }
+
+
+void Utils::DeleteStaffByNo(CString staff_no)
+{
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+
+	mysql_init(&mysql);
+
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		mysql_set_character_set(&mysql, "gbk");
+		string sql = "delete from t_staff where staff_no=";
+		sql.append(1,'\'').append(staff_no).append(1,'\'');
+		mysql_query(&mysql,sql.c_str());
+		
+		//删除目录
+		string str = "select face_path from t_face where staff_no = ";
+		str.append(1,'\'').append(staff_no).append(1,'\'');
+		mysql_query(&mysql,str.c_str());
+		result = mysql_store_result(&mysql);
+		//  int fieldcount = mysql_num_fields(result);
+		MYSQL_ROW row = NULL;
+		row = mysql_fetch_row(result);
+		Utils utils;
+		if(row==NULL)
+		{
+			//AfxMessageBox("请先登记");  //如果为空什么也不做
+		}else{
+			utils.DeletePath(row[0]);
+		}
+		if(result!=NULL) 
+			mysql_free_result(result);//释放结果资源 
+
+		//删除数据表数据
+		string m_SQL = "delete from t_face where staff_no=";
+		m_SQL.append(1,'\'').append(staff_no).append(1,'\'');
+		mysql_query(&mysql,m_SQL.c_str());
+
+		mysql_close(&mysql);
+		return;
+	}else{
+		AfxMessageBox("系统出错");
+	}
+}
+
+
+void Utils::AddStaff(CString name, CString no, CString sex, CString duty, CString tel, CListCtrl* list, int nCount)
+{
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+
+	mysql_init(&mysql);
+
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		mysql_set_character_set(&mysql, "gbk");
+		if (!CheckNo(mysql,sqlutils,no) && !CheckTel(mysql,sqlutils,tel))
+		{
+			string sql = "insert into t_staff (staff_name,staff_no,staff_sex,staff_duty,staff_tel) values(";
+			sql.append(1,'\'').append(name).append(1,'\'').append(",").append(1,'\'').append(no).append(1,'\'').append(",")
+				.append(1,'\'').append(sex).append(1,'\'').append(",").append(1,'\'').append(duty).append(1,'\'')
+				.append(",").append(1,'\'').append(tel).append(1,'\'').append(")");
+			mysql_query(&mysql,sql.c_str());
+			mysql_close(&mysql);
+			list->InsertItem(nCount,no);
+			list->SetItemText(nCount,1,name);
+			list->SetItemText(nCount,2,sex);
+			list->SetItemText(nCount,3,duty);
+			list->SetItemText(nCount,4,tel);
+			AfxMessageBox("添加信息成功");
+			return;
+		}else if(CheckNo(mysql,sqlutils,no)){
+			AfxMessageBox("此员工编号已存在");
+		}else if (CheckTel(mysql,sqlutils,tel)){
+			AfxMessageBox("此员工电话已存在");
+		}
+		return;
+	}else{
+		AfxMessageBox("系统出错");
+	}
+}
+
+//检查是否员工编号是否已存在
+bool Utils::CheckNo(MYSQL mysql,SQLUtils* sqlutils,CString staff_no)
+{
+	MYSQL_RES *result = NULL;
+	mysql_init(&mysql);
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		string no(staff_no.GetBuffer(staff_no.GetLength()));
+		string sql = "select staff_no from t_staff where staff_no=";
+		sql.append(1,'\'').append(no).append(1,'\'');
+		mysql_query(&mysql,sql.c_str());
+		result = mysql_store_result(&mysql);
+		int rowcount = mysql_num_rows(result);
+		if (rowcount > 0)
+		{
+			return true;
+		}
+
+	}else{
+		AfxMessageBox("系统出错");
+	}
+	return false;
+}
+
+//检查是否员工电话是否已存在
+bool Utils::CheckTel(MYSQL mysql,SQLUtils* sqlutils, CString staff_tel)
+{
+	MYSQL_RES *result = NULL;
+	mysql_init(&mysql);
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		string tel(staff_tel.GetBuffer(staff_tel.GetLength()));
+		string sql = "select staff_tel from t_staff where staff_tel=";
+		sql.append(1,'\'').append(tel).append(1,'\'');
+		mysql_query(&mysql,sql.c_str());
+		result = mysql_store_result(&mysql);
+		int rowcount = mysql_num_rows(result);
+		if (rowcount > 0)
+		{
+			return true;
+		}
+
+	}else{
+		AfxMessageBox("系统出错");
+	}
+	return false;
+}
+
+
+void Utils::ModifyStaff(CString staff_name, CString staff_sex, CString staff_duty, CString staff_tel, CListCtrl* list, CString no, int nSel)
+{
+	MYSQL mysql;
+	MYSQL_RES *result = NULL;
+	SQLUtils* sqlutils = new SQLUtils("localhost","root","root","work_database",3306);
+
+	mysql_init(&mysql);
+
+	string serverName = sqlutils->getServerName();
+	string userName = sqlutils->getUserName();
+	string password = sqlutils->getPassword();
+	string databaseName = sqlutils->getDatabaseName();
+	int port = sqlutils->getPort();
+	if (mysql_real_connect(&mysql,serverName.c_str(),userName.c_str(),password.c_str(),databaseName.c_str(),port,NULL,0))
+	{
+		mysql_set_character_set(&mysql, "gbk");
+		string sql = "update t_staff set staff_name=";
+		sql.append(1,'\'').append(staff_name).append(1,'\'').append(",").append("staff_sex=").append(1,'\'').append(staff_sex).append(1,'\'').append(",")
+			.append("staff_duty=").append(1,'\'').append(staff_duty).append(1,'\'').append(",").append("staff_tel=").append(1,'\'').append(staff_tel).append(1,'\'')
+			.append(" where staff_no=").append(1,'\'').append(no).append(1,'\'');
+		mysql_query(&mysql,sql.c_str());
+		mysql_close(&mysql);
+		list->SetItemText(nSel,1,staff_name);
+		list->SetItemText(nSel,2,staff_sex);
+		list->SetItemText(nSel,3,staff_duty);
+		list->SetItemText(nSel,4,staff_tel);
+		AfxMessageBox("修改信息成功");
+		return;
+	}
+	else{
+		AfxMessageBox("系统出错");
+	}
+}

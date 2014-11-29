@@ -23,8 +23,6 @@ public:
 	afx_msg void OnBnClickedAdd();
 	afx_msg void OnBnClickedResetButton();
 	virtual BOOL OnInitDialog();
-	BOOL checkNo(MYSQL mysql,SQLUtils* sqlutils,CString staff_no);
-	BOOL checkTel(MYSQL mysql,SQLUtils* sqlutils,CString staff_tel);
 	CInfoManageDlg* m_pInfoDlg;
 	BOOL modifyFlag;
 	CString no,name,sex,duty,tel;

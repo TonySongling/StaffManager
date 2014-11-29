@@ -53,7 +53,7 @@ void CRegisterFaceDlg::OnBnClickedAddButton()
 	int nSel = m_list->GetNextSelectedItem(pos);
 	if (nSel < 0)
 	{
-		MessageBox("请选中一项再进行操作");
+		AfxMessageBox("请选中一项再进行操作");
 		return;
 	}
 	CString staff_no = m_list->GetItemText(nSel,0);
@@ -256,7 +256,7 @@ void CRegisterFaceDlg::readStaff(CListCtrl* pList)
 
 	}
 	else{
-		MessageBox("系统出错");
+		AfxMessageBox("系统出错");
 	}
 }
 

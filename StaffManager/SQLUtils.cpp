@@ -6,7 +6,7 @@ SQLUtils::SQLUtils(string serverName,string userName,string password,string data
 {
 	this->serverName = serverName;
 	this->userName = userName;
-	this->password =password;
+	this->password = password;
 	this->databaseName = databaseName;
 	this->port = port;
 }

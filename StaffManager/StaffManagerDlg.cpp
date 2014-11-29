@@ -258,7 +258,7 @@ void CStaffManagerDlg::OnBnClickedDataButton()
 	SelectPage();
 }
 
-
+//根据m_nSel选择显示的窗口
 void CStaffManagerDlg::SelectPage()
 {
 	int i = 0;

@@ -60,7 +60,7 @@ BOOL CLoginDlg::CheckUser(void)
 
 	if (user_name.IsEmpty() || pass.IsEmpty())
 	{
-		MessageBox("用户名和密码不能为空");
+		AfxMessageBox("用户名和密码不能为空");
 		return FALSE;
 	}
 	MYSQL mysql;
@@ -87,13 +87,13 @@ BOOL CLoginDlg::CheckUser(void)
 			mysql_close(&mysql);
 			return TRUE;
 		}else{
-			MessageBox("用户名或密码有误，请重新输入");
+			AfxMessageBox("用户名或密码有误，请重新输入");
 			return FALSE;
 		}
 		
 	}
 	else{
-		MessageBox("系统出错");
+		AfxMessageBox("系统出错");
 	}
 	return FALSE;
 }

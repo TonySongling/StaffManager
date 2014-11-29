@@ -131,7 +131,7 @@ void CDataStatisticsDlg::ReadAllLogs(CListCtrl* pList)
 
 	}
 	else{
-		MessageBox("系统出错");
+		AfxMessageBox("系统出错");
 	}
 }
 
